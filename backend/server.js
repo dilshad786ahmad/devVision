@@ -14,7 +14,7 @@ app.set('trust proxy', 1);
 // ✅ Middlewares
 // app.use(cors());
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://my-life-website-cjdr.vercel.app'], // Aapke frontend ka exact URL
+    origin: ['http://localhost:5173', 'https://my-life-website-cjdr.vercel.app', 'https://website-9y9f.vercel.app'], // Aapke frontend ka exact URL
     credentials: true,               // Cookies allow karne ke liye zaroori hai
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
