@@ -216,11 +216,12 @@ exports.signin = async (req, res) => {
         );
 
         // 5. COOKIE OPTIONS
+        const isLocal = req.get("origin")?.includes("localhost");
         const cookieOptions = {
-            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 din (Token ki expiry se match karein)
-            httpOnly: true, // Security: Frontend JS isse read nahi kar payegi
-            secure: true, // true karna zaroori hai sameSite 'none' ke liye
-            sameSite: "none" // cross-origin requests ke liye 'none'
+            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+            secure: isLocal ? false : true,
+            sameSite: isLocal ? "lax" : "none"
         };
 
         // 6. Send Cookie and Response
@@ -251,11 +252,12 @@ exports.logout = async (req, res) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             await Auth.findByIdAndUpdate(decoded.id, { status: "offline" });
         }
+        const isLocal = req.get("origin")?.includes("localhost");
         res.cookie("token", "", { 
             expires: new Date(0),
             httpOnly: true,
-            secure: true,
-            sameSite: "none"
+            secure: isLocal ? false : true,
+            sameSite: isLocal ? "lax" : "none"
         });
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
