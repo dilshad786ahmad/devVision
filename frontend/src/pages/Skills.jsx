@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { 
   Code, Database, Cloud, PenTool, Box, Server, Cpu, Users, MessageCircle, Clock, ArrowRight, Layout,
-  Atom, Layers, Bot, Smartphone, Zap, Globe, Lock, GitBranch, Codepen, Workflow
+  Atom, Layers, Bot, Smartphone, Zap, Globe, Lock, GitBranch, Workflow
 } from "lucide-react";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -11,7 +11,7 @@ import { API_BASE_URL } from "../apiConfig";
 
 const IconMap = { 
   Code, Database, Cloud, PenTool, Box, Server, Cpu, Users, MessageCircle, Clock, Layout,
-  Atom, Layers, Bot, Smartphone, Zap, Globe, Lock, GitBranch, Codepen, Workflow 
+  Atom, Layers, Bot, Smartphone, Zap, Globe, Lock, GitBranch, Workflow 
 };
 
 const DynamicIcon = ({ name, className }) => {
