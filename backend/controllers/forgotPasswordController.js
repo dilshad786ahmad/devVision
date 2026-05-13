@@ -13,7 +13,9 @@ const getTransporter = () => {
         return null;
     }
     return nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true, // use SSL
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
@@ -41,6 +43,9 @@ exports.sendOtp = async (req, res) => {
         const expiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
 
         otpStore.set(email, { otp, expiresAt });
+        
+        // --- LOG FOR DEBUGGING ON RENDER ---
+        console.log(`[DEBUG] Generated OTP for ${email}: ${otp}`);
 
         // Send OTP via email
         const transporter = getTransporter();
