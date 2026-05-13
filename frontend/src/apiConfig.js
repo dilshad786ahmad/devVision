@@ -3,5 +3,6 @@
 // The root vercel.json is configured to proxy /api and /uploads to the Render backend.
 //  cherck
 // asdasdasd
-
-export const API_BASE_URL = "https://website-mmcy.onrender.com/";
+export const API_BASE_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://website-mmcy.onrender.com";
