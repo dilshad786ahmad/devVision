@@ -7,13 +7,19 @@ const nodemailer = require("nodemailer");
 const otpStore = new Map();
 
 // ================= EMAIL TRANSPORTER =================
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-});
+const getTransporter = () => {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.warn("⚠️ EMAIL_USER or EMAIL_PASS not set in environment variables.");
+        return null;
+    }
+    return nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+};
 
 // ================= STEP 1: SEND OTP =================
 exports.sendOtp = async (req, res) => {
@@ -37,29 +43,56 @@ exports.sendOtp = async (req, res) => {
         otpStore.set(email, { otp, expiresAt });
 
         // Send OTP via email
+        const transporter = getTransporter();
+        if (!transporter) {
+            return res.status(500).json({ 
+                success: false, 
+                message: "Email service is not configured on the server. Please contact support." 
+            });
+        }
+
         await transporter.sendMail({
-            from: `"DevVision" <${process.env.EMAIL_USER}>`,
+            from: `"DevVision Support" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: "🔐 Your Password Reset OTP",
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; background: #0a0a0a; color: #fff; padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);">
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 500px; margin: 0 auto; background-color: #0a0a0a; color: #ffffff; padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
                     <div style="text-align: center; margin-bottom: 32px;">
-                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; font-style: italic; color: white; margin-bottom: 16px;">DV</div>
-                        <h1 style="color: #fff; margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -1px;">Password Reset</h1>
+                        <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: white; margin: 0 auto 16px;">DV</div>
+                        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Password Reset</h1>
+                        <p style="color: #9ca3af; font-size: 14px; margin-top: 8px;">Secure Identity Verification</p>
                     </div>
-                    <p style="color: #9ca3af; font-size: 14px; line-height: 1.6; text-align: center;">Use the OTP below to reset your password. This code expires in <strong style="color: #f97316;">2 minutes</strong>.</p>
-                    <div style="background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.3); border-radius: 16px; padding: 24px; text-align: center; margin: 32px 0;">
-                        <span style="font-size: 48px; font-weight: 900; letter-spacing: 8px; color: #f97316;">${otp}</span>
+                    
+                    <div style="background-color: rgba(255,255,255,0.03); border-radius: 20px; padding: 32px; border: 1px solid rgba(255,255,255,0.05);">
+                        <p style="color: #d1d5db; font-size: 15px; line-height: 1.6; margin: 0 0 24px; text-align: center;">
+                            We received a request to reset your password. Use the following 6-digit code to continue:
+                        </p>
+                        
+                        <div style="background: linear-gradient(to right, rgba(249,115,22,0.1), rgba(234,88,12,0.1)); border: 1px dashed rgba(249,115,22,0.4); border-radius: 16px; padding: 24px; text-align: center;">
+                            <span style="font-size: 42px; font-weight: 900; letter-spacing: 10px; color: #f97316; font-family: monospace;">${otp}</span>
+                        </div>
+                        
+                        <p style="color: #ef4444; font-size: 13px; font-weight: 600; text-align: center; margin: 24px 0 0;">
+                            ⚠️ This code expires in 2 minutes
+                        </p>
                     </div>
-                    <p style="color: #6b7280; font-size: 12px; text-align: center; margin: 0;">If you didn't request this, please ignore this email.</p>
+                    
+                    <div style="margin-top: 32px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); pt-24px;">
+                        <p style="color: #6b7280; font-size: 12px; margin-bottom: 8px;">If you didn't request this, you can safely ignore this email.</p>
+                        <p style="color: #4b5563; font-size: 11px;">&copy; ${new Date().getFullYear()} DevVision. All rights reserved.</p>
+                    </div>
                 </div>
             `,
         });
 
         res.status(200).json({ success: true, message: "OTP sent to your email successfully." });
     } catch (error) {
-        console.error("Send OTP Error:", error);
-        res.status(500).json({ success: false, message: "Failed to send OTP. Please try again.", error: error.message });
+        console.error("CRITICAL: Send OTP Error:", error);
+        res.status(500).json({ 
+            success: false, 
+            message: "Failed to send OTP. Please check if the email server is active.", 
+            error: error.message 
+        });
     }
 };
 
