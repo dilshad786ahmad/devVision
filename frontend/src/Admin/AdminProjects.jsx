@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { FolderGit2, Edit, Save, Plus, Trash2, X, Layout, Sparkles, Image as ImageIcon, ExternalLink, Box } from "lucide-react";
+import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
 import { API_BASE_URL } from "../apiConfig";
 
 const AdminProjects = () => {
@@ -95,8 +96,30 @@ const AdminProjects = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center font-black text-orange-500 animate-pulse uppercase tracking-widest">
-      Scanning Repositories...
+    <div className="min-h-screen bg-[#050505] p-12 space-y-12">
+      <header className="mb-12">
+        <SkeletonBase className="h-4 w-32 rounded-full mb-4" />
+        <SkeletonBase className="h-10 w-64 rounded-lg" />
+      </header>
+      <div className="flex gap-2 mb-10 p-1.5 bg-white/5 border border-white/10 rounded-2xl w-fit">
+        {[1,2].map(i => <SkeletonBase key={i} className="h-12 w-32 rounded-xl" />)}
+      </div>
+      {activeTab === "header" ? (
+        <AdminFormSkeleton />
+      ) : (
+        <div className="grid md:grid-cols-3 gap-8">
+          {[1,2,3,4,5,6].map(i => (
+            <div key={i} className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] overflow-hidden space-y-4">
+               <SkeletonBase className="aspect-video w-full" />
+               <div className="p-8 space-y-4">
+                  <SkeletonBase className="h-4 w-20 rounded" />
+                  <SkeletonBase className="h-8 w-3/4 rounded" />
+                  <SkeletonBase className="h-4 w-full rounded" />
+               </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 

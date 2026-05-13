@@ -8,6 +8,7 @@ import {
   Briefcase, ChevronRight, Check, Sparkles, Asterisk, Layers, 
   Rocket, Code, AppWindow, Zap, Globe, Shield 
 } from "lucide-react";
+import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
 
 // Icon mapping for enterprise section
 const IconMap = { Asterisk, Layers, Rocket, Code, Layout, AppWindow, Zap, Globe, Shield };
@@ -150,8 +151,19 @@ const AdminPrices = () => {
   ];
 
   if (loading) return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center font-black text-orange-500 animate-pulse uppercase tracking-widest">
-      Mapping Revenue Flow...
+    <div className="min-h-screen bg-[#050505] p-12 space-y-12">
+      <header className="mb-12">
+        <SkeletonBase className="h-4 w-32 rounded-full mb-4" />
+        <SkeletonBase className="h-10 w-64 rounded-lg" />
+      </header>
+      <div className="flex gap-2 mb-10 p-1.5 bg-white/5 border border-white/10 rounded-2xl w-fit">
+        {[1,2,3,4].map(i => <SkeletonBase key={i} className="h-12 w-32 rounded-xl" />)}
+      </div>
+      {activeTab === "header" ? (
+        <AdminFormSkeleton />
+      ) : (
+        <AdminGridSkeleton count={6} />
+      )}
     </div>
   );
 

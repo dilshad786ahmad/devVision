@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { API_BASE_URL } from "../apiConfig";
 import { Mail, Trash2, Filter, Clock, X, AlertTriangle, Edit, Plus, Layout, Smartphone, Brush, Gauge, MapPin, Save, ChevronRight, MessageSquare, ShieldCheck } from "lucide-react";
+import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
 
 // Icon mapping for dynamic rendering
 const IconMap = {
@@ -263,7 +264,14 @@ const AdminContact = () => {
                   </thead>
                   <tbody className="divide-y divide-white/5">
                     {loadingLeads ? (
-                      <tr><td colSpan="4" className="text-center py-24 animate-pulse text-gray-600 font-bold uppercase tracking-tighter">Syncing Leads...</td></tr>
+                      [1,2,3,4,5].map(i => (
+                        <tr key={i} className="animate-pulse">
+                          <td className="px-8 py-6"><SkeletonBase className="h-12 w-48 rounded-xl" /></td>
+                          <td className="px-8 py-6"><SkeletonBase className="h-12 w-full rounded-xl" /></td>
+                          <td className="px-8 py-6"><SkeletonBase className="h-8 w-24 rounded-full" /></td>
+                          <td className="px-8 py-6"><SkeletonBase className="h-10 w-10 rounded-xl ml-auto" /></td>
+                        </tr>
+                      ))
                     ) : leads.length === 0 ? (
                       <tr><td colSpan="4" className="text-center py-24 text-gray-600 italic">No inquiries found in this category.</td></tr>
                     ) : (
@@ -320,8 +328,12 @@ const AdminContact = () => {
         {activeTab === "content" && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
             {loadingContent ? (
-               <div className="text-center py-24 text-gray-600 font-bold uppercase tracking-tighter animate-pulse bg-white/[0.02] border border-white/10 rounded-[2.5rem]">
-                 Fetching Page Metadata...
+               <div className="space-y-8">
+                 <AdminFormSkeleton />
+                 <div className="grid md:grid-cols-2 gap-8">
+                   <AdminGridSkeleton count={3} />
+                   <AdminGridSkeleton count={3} />
+                 </div>
                </div>
             ) : (
               <>

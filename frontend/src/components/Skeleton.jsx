@@ -81,4 +81,39 @@ export const HeroStackSkeleton = () => (
   </>
 );
 
+export const AdminFormSkeleton = () => (
+  <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 space-y-10">
+    <div className="space-y-4">
+      <SkeletonBase className="h-4 w-32 rounded" />
+      <div className="grid md:grid-cols-2 gap-8">
+        <SkeletonBase className="h-14 rounded-2xl" />
+        <SkeletonBase className="h-14 rounded-2xl" />
+      </div>
+    </div>
+    <div className="space-y-4">
+      <SkeletonBase className="h-4 w-32 rounded" />
+      <SkeletonBase className="h-32 rounded-2xl" />
+    </div>
+    <div className="flex justify-end">
+      <SkeletonBase className="h-14 w-40 rounded-2xl" />
+    </div>
+  </div>
+);
+
+export const AdminGridSkeleton = ({ count = 3 }) => (
+  <div className="grid md:grid-cols-3 gap-6">
+    {Array.from({ length: count }).map((_, i) => (
+      <div key={i} className="bg-white/[0.02] border border-white/10 p-8 rounded-[2.5rem] space-y-4">
+        <SkeletonBase className="w-14 h-14 rounded-2xl" />
+        <SkeletonBase className="h-6 w-3/4 rounded-md" />
+        <SkeletonBase className="h-4 w-full rounded-md" />
+        <div className="flex gap-2 pt-4">
+          <SkeletonBase className="w-10 h-10 rounded-xl" />
+          <SkeletonBase className="w-10 h-10 rounded-xl" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 export default SkeletonBase;

@@ -8,6 +8,7 @@ import { API_BASE_URL } from '../apiConfig';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { SkeletonBase, AdminGridSkeleton } from '../components/Skeleton';
 
 const AdminTeam = () => {
     const { isDarkMode } = useTheme();
@@ -235,6 +236,38 @@ const AdminTeam = () => {
         setIsAdding(false);
         setProfileFile(null);
     };
+
+    if (loading) return (
+        <div className="min-h-screen p-4 md:p-8 bg-[#050505] text-white space-y-12">
+            <div className="max-w-6xl mx-auto space-y-12">
+                <header className="flex justify-between items-center">
+                    <div className="space-y-4">
+                        <SkeletonBase className="h-10 w-64 rounded-lg" />
+                        <SkeletonBase className="h-4 w-48 rounded" />
+                    </div>
+                    <SkeletonBase className="h-14 w-48 rounded-2xl" />
+                </header>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1,2,3,4,5,6].map(i => (
+                        <div key={i} className="p-4 rounded-3xl bg-[#0a0a0a] space-y-4">
+                            <div className="flex items-center space-x-4">
+                                <SkeletonBase className="w-16 h-16 rounded-2xl" />
+                                <div className="space-y-2">
+                                    <SkeletonBase className="h-4 w-24 rounded" />
+                                    <SkeletonBase className="h-3 w-16 rounded" />
+                                </div>
+                            </div>
+                            <SkeletonBase className="h-12 w-full rounded-xl" />
+                            <div className="flex justify-end gap-2">
+                                <SkeletonBase className="w-10 h-10 rounded-xl" />
+                                <SkeletonBase className="w-10 h-10 rounded-xl" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <div className="min-h-screen p-4 md:p-8 bg-[#050505] text-white">

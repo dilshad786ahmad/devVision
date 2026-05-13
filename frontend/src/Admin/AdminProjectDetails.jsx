@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { Save, ArrowLeft, Image as ImageIcon, Plus, Trash2, Star, Sparkles, Layout, Box } from "lucide-react";
+import { SkeletonBase, AdminFormSkeleton } from "../components/Skeleton";
 import { API_BASE_URL } from "../apiConfig";
 
 export default function AdminProjectDetails() {
@@ -94,7 +95,21 @@ export default function AdminProjectDetails() {
     }
   };
 
-  if (loading) return <div className="min-h-screen bg-[#050505] flex items-center justify-center text-orange-500 font-black animate-pulse">BOOTING CASE STUDY MODULE...</div>;
+  if (loading) return (
+    <div className="min-h-screen bg-[#050505] p-12 space-y-12">
+      <div className="max-w-5xl mx-auto space-y-12">
+        <header className="flex justify-between items-center bg-white/[0.02] p-8 rounded-[2rem] border border-white/10">
+          <SkeletonBase className="h-4 w-32 rounded-full" />
+          <SkeletonBase className="h-10 w-64 rounded-lg" />
+        </header>
+        <AdminFormSkeleton />
+        <div className="grid md:grid-cols-2 gap-8">
+          <SkeletonBase className="h-[400px] w-full rounded-[2.5rem]" />
+          <SkeletonBase className="h-[400px] w-full rounded-[2.5rem]" />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-8 font-sans">

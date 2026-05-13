@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Palette, Code, Monitor, Edit, Save, Plus, Trash2, X, Layout, Sparkles, Box } from "lucide-react";
+import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
 import { API_BASE_URL } from "../apiConfig";
 
 const IconMap = { Palette, Code, Monitor, Layout, Box };
@@ -101,8 +102,19 @@ const AdminServices = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center font-black text-orange-500 animate-pulse uppercase tracking-widest">
-      Syncing Services...
+    <div className="min-h-screen bg-[#050505] p-12 space-y-12">
+      <header className="mb-12">
+        <SkeletonBase className="h-4 w-32 rounded-full mb-4" />
+        <SkeletonBase className="h-10 w-64 rounded-lg" />
+      </header>
+      <div className="flex gap-2 mb-10 p-1.5 bg-white/5 border border-white/10 rounded-2xl w-fit">
+        {[1,2].map(i => <SkeletonBase key={i} className="h-12 w-32 rounded-xl" />)}
+      </div>
+      {activeTab === "header" ? (
+        <AdminFormSkeleton />
+      ) : (
+        <AdminGridSkeleton count={6} />
+      )}
     </div>
   );
 

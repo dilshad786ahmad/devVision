@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "../apiConfig";
 import { Save, ArrowLeft, ArrowRight, Plus, Trash2, Layout, Monitor, Code, Box, Zap, Cpu, MousePointer2, Database, Image as ImageIcon, Eye } from "lucide-react";
+import { SkeletonBase, AdminFormSkeleton } from "../components/Skeleton";
 
 const IconMap = { Layout, Monitor, Code, Box, Zap, Cpu, MousePointer2, Database };
 
@@ -84,10 +85,17 @@ const AdminServiceDetails = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-      <div className="flex flex-col items-center gap-6">
-        <div className="w-16 h-16 rounded-full border-4 border-orange-500/20 border-t-orange-500 animate-spin"></div>
-        <p className="font-black text-orange-500 animate-pulse uppercase tracking-widest text-xs">Loading Editor...</p>
+    <div className="min-h-screen bg-[#050505] p-12 space-y-12">
+      <div className="max-w-5xl mx-auto space-y-12">
+        <header className="flex justify-between items-center bg-white/[0.02] p-8 rounded-[2rem] border border-white/10">
+          <div className="space-y-4">
+            <SkeletonBase className="h-4 w-32 rounded-full" />
+            <SkeletonBase className="h-10 w-64 rounded-lg" />
+          </div>
+          <SkeletonBase className="h-12 w-32 rounded-xl" />
+        </header>
+        <AdminFormSkeleton />
+        <AdminFormSkeleton />
       </div>
     </div>
   );

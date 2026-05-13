@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { API_BASE_URL } from "../apiConfig";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Edit, Save, Plus, Trash2, Layout, Image as ImageIcon, BarChart3, ChevronRight, X, Download } from "lucide-react";
+import { SkeletonBase, AdminFormSkeleton } from "../components/Skeleton";
 
 
 const AdminAbout = () => {
@@ -163,8 +164,25 @@ const AdminAbout = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-      <div className="text-orange-500 font-black tracking-widest animate-pulse uppercase">Syncing Infrastructure...</div>
+    <div className="min-h-screen bg-[#050505] p-12 space-y-12">
+      <header className="mb-12">
+        <SkeletonBase className="h-4 w-32 rounded-full mb-4" />
+        <SkeletonBase className="h-10 w-64 rounded-lg" />
+      </header>
+      <div className="flex gap-2 mb-10 p-1.5 bg-white/5 border border-white/10 rounded-2xl w-fit">
+        {[1,2,3].map(i => <SkeletonBase key={i} className="h-12 w-32 rounded-xl" />)}
+      </div>
+      {activeTab === "hero" ? (
+        <AdminFormSkeleton />
+      ) : activeTab === "stats" ? (
+        <div className="grid md:grid-cols-4 gap-6">
+          {[1,2,3,4].map(i => <SkeletonBase key={i} className="h-40 rounded-[2.5rem]" />)}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {[1,2,3,4,5,6].map(i => <SkeletonBase key={i} className="aspect-video rounded-[2rem]" />)}
+        </div>
+      )}
     </div>
   );
 
