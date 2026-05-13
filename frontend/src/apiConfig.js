@@ -2,7 +2,8 @@
 // This URL will be used for all API calls across the frontend.
 // The root vercel.json is configured to proxy /api and /uploads to the Render backend.
 //  cherck
+//  push kr rha hu github pr
 export const API_BASE_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000"
-    : "https://devvision-4c4k.onrender.com";
+    : "https://website-mmcy.onrender.com";
     
