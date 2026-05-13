@@ -4,5 +4,5 @@
 //  cherck
 export const API_BASE_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000"
-    : "http://localhost:5173";
+    : "https://devvision-4c4k.onrender.com";
     
