@@ -5,5 +5,4 @@
 //  push kr rha hu github pr
 export const API_BASE_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000"
-    : "https://website-mmcy.onrender.com";
-    
+    : "https://website-apgr.vercel.app";
