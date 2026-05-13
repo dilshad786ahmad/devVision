@@ -93,6 +93,10 @@ app.use("/api/admin", adminGetUser);
 const clientFeedbackRoutes = require('./routes/clientFeedbackRoutes');
 app.use("/api/feedback", clientFeedbackRoutes);
 
+// ✅ Legal & Privacy Routes
+const legalRoutes = require('./routes/legalRoutes');
+app.use("/api/legal", legalRoutes);
+
 
 
 // Port

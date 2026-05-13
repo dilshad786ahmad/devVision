@@ -3,11 +3,19 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { Palette, Code, Monitor, Edit, Save, Plus, Trash2, X, Layout, Sparkles, Box } from "lucide-react";
+import { 
+  Palette, Code, Monitor, Edit, Save, Plus, Trash2, X, Layout, Sparkles, Box,
+  ShoppingBag, CreditCard, Smartphone, Megaphone, Search, BarChart, Layers, PenTool, 
+  MessageSquare, Video, Music, Globe, Zap, Lock, Database, Briefcase, Mail, Cpu, HardDrive, Users
+} from "lucide-react";
 import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
 import { API_BASE_URL } from "../apiConfig";
 
-const IconMap = { Palette, Code, Monitor, Layout, Box };
+const IconMap = { 
+  Palette, Code, Monitor, Layout, Box, 
+  ShoppingBag, CreditCard, Smartphone, Megaphone, Search, BarChart, Layers, PenTool, 
+  MessageSquare, Video, Music, Globe, Zap, Lock, Database, Briefcase, Mail, Cpu, HardDrive, Users 
+};
 
 const DynamicIcon = ({ name, className }) => {
   const IconComponent = IconMap[name] || Layout;

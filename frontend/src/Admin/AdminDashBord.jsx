@@ -329,6 +329,7 @@ export default function AdminDashboard() {
                                   {user.authProvider || 'Email'}
                                 </span>
                               </div>
+                              <div className="text-[10px] text-orange-500/80 font-bold lowercase mb-1">{user.email}</div>
                               <div className="text-[10px] text-gray-600 font-mono">#{user._id.slice(-8)}</div>
                             </div>
                           </div>

@@ -26,7 +26,7 @@ export default function Footer() {
             </NavLink>
             
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              Delivering precision-engineered digital solutions for global leaders. We bridge the gap between vision and execution.
+              Passionate Freelance Full-Stack Developer dedicated to crafting high-performance, user-centric web applications. Transforming your vision into seamless digital experiences.
             </p>
 
             <div className="flex gap-4">
@@ -64,11 +64,19 @@ export default function Footer() {
           <div>
             <h3 className="text-white text-[11px] font-black tracking-[0.2em] uppercase mb-8">Legal & Privacy</h3>
             <ul className="space-y-4">
-              {["Privacy Policy", "Terms of Service", "Cookie Settings", "Security"].map((item, i) => (
+              {[
+                { name: "Privacy Policy", slug: "privacy-policy" },
+                { name: "Terms of Service", slug: "terms-of-service" },
+                { name: "Cookie Settings", slug: "cookie-settings" },
+                { name: "Security", slug: "security" }
+              ].map((item, i) => (
                 <li key={i}>
-                  <a href="#" className="text-sm hover:text-white transition-colors duration-300">
-                    {item}
-                  </a>
+                  <NavLink 
+                    to={`/legal/${item.slug}`} 
+                    className="text-sm hover:text-orange-500 transition-colors duration-300"
+                  >
+                    {item.name}
+                  </NavLink>
                 </li>
               ))}
             </ul>

@@ -24,6 +24,7 @@ const Team            = lazy(() => import("./pages/our_team"));
 const TeamDetails     = lazy(() => import("./pages/TeamDetails"));
 const ServiceDetails  = lazy(() => import("./pages/ServiceDetails"));
 const ClientFeedback  = lazy(() => import("./pages/ClientFeedback"));
+const LegalPage       = lazy(() => import("./pages/LegalPage"));
 const NotFound        = lazy(() => import("./pages/NotFound"));
 
 // ─── Lazy-loaded Admin Pages ─────────────────────────────────────────────────
@@ -39,6 +40,7 @@ const AdminProjectDetails = lazy(() => import("./Admin/AdminProjectDetails"));
 const AdminTeam           = lazy(() => import("./Admin/AdminTeam"));
 const AdminServiceDetails = lazy(() => import("./Admin/AdminServiceDetails"));
 const AdminFeedback       = lazy(() => import("./Admin/AdminFeedback"));
+const AdminLegal          = lazy(() => import("./Admin/AdminLegal"));
 
 // ─── Minimal page-transition fallback (invisible to user) ────────────────────
 const PageFallback = () => (
@@ -91,6 +93,7 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/team/:id" element={<TeamDetails />} />
           <Route path="/service_details/:serviceId" element={<ServiceDetails />} />
+          <Route path="/legal/:slug" element={<LegalPage />} />
 
 
           {/* --- Protected Admin Dashboard Routes --- */}
@@ -106,6 +109,7 @@ function App() {
           <Route path="/admin/my/team" element={<ProtectedRoute><AdminTeam /></ProtectedRoute>} />
           <Route path="/admin/service-details/:serviceId" element={<ProtectedRoute><AdminServiceDetails /></ProtectedRoute>} />
           <Route path="/admin/project-details/:projectId" element={<ProtectedRoute><AdminProjectDetails /></ProtectedRoute>} />
+          <Route path="/admin/my/legal" element={<ProtectedRoute><AdminLegal /></ProtectedRoute>} />
 
           {/* --- 404 Not Found Catch-all --- */}
           <Route path="*" element={<NotFound />} />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { Menu, X, UserCircle, Search, Users, LogOut, Layout, Sparkles, Box, Cpu, FolderGit2, Contact, BadgeDollarSign, Settings, Sun, Moon } from 'lucide-react';
+import { Menu, X, UserCircle, Search, Users, LogOut, Layout, Sparkles, Box, Cpu, FolderGit2, Contact, BadgeDollarSign, Settings, Sun, Moon, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AdminHeader() {
@@ -21,6 +21,7 @@ export default function AdminHeader() {
     { name: 'Contact', path: '/admin/my/contact', icon: Contact },
     { name: 'Feedback', path: '/admin/my/feedback', icon: Sparkles },
     { name: 'Team', path: '/admin/my/team', icon: Users },
+    { name: 'Legal', path: '/admin/my/legal', icon: Shield },
     { name: 'Dashboard', path: '/admin', icon: Sparkles },
   ];
 

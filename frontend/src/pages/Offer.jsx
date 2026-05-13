@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Layout, Smartphone, Brush, Gauge, Globe, Code, Zap, Sparkles, Palette, Monitor, ArrowRight, Box } from "lucide-react";
+import { 
+  Layout, Smartphone, Brush, Gauge, Globe, Code, Zap, Sparkles, Palette, Monitor, ArrowRight, Box,
+  ShoppingBag, CreditCard, Megaphone, Search, BarChart, Layers, PenTool, 
+  MessageSquare, Video, Music, Lock, Database, Briefcase, Mail, Cpu, HardDrive, Users
+} from "lucide-react";
 import { API_BASE_URL } from "../apiConfig";
 import Breadcrumb from "../components/Breadcrumb";
 import ExcellenceSection from "./Excellenace";
@@ -8,7 +12,11 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { CardSkeleton, SkeletonBase, TextSkeleton } from "../components/Skeleton";
 
-const IconMap = { Palette, Code, Monitor, Layout, Box };
+const IconMap = { 
+  Palette, Code, Monitor, Layout, Box, 
+  ShoppingBag, CreditCard, Smartphone, Megaphone, Search, BarChart, Layers, PenTool, 
+  MessageSquare, Video, Music, Globe, Zap, Lock, Database, Briefcase, Mail, Cpu, HardDrive, Users 
+};
 
 const DynamicIcon = ({ name, className }) => {
   const IconComponent = IconMap[name] || Layout;

@@ -3,10 +3,16 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { API_BASE_URL } from "../apiConfig";
-import { Code, Users, MessageCircle, Clock, Server, Database, Cloud, PenTool, Box, Cpu, Save, Plus, Trash2, Edit, Layout, Sparkles, Terminal } from "lucide-react";
+import { 
+  Code, Users, MessageCircle, Clock, Server, Database, Cloud, PenTool, Box, Cpu, Save, Plus, Trash2, Edit, Layout, Sparkles, Terminal,
+  Atom, Layers, Bot, Smartphone, Zap, Globe, Lock, GitBranch, Codepen, Workflow
+} from "lucide-react";
 import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
 
-const IconMap = { Code, Users, MessageCircle, Clock, Server, Database, Cloud, PenTool, Box, Cpu, Layout };
+const IconMap = { 
+  Code, Users, MessageCircle, Clock, Server, Database, Cloud, PenTool, Box, Cpu, Layout, Terminal,
+  Atom, Layers, Bot, Smartphone, Zap, Globe, Lock, GitBranch, Codepen, Workflow 
+};
 
 const DynamicIcon = ({ name, className }) => {
   const IconComponent = IconMap[name] || Layout;

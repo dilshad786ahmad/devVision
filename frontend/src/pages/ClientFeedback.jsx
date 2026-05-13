@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Star, Edit3, X, User, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -12,6 +13,8 @@ export default function ClientFeedback() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,6 +42,11 @@ export default function ClientFeedback() {
   };
 
   const openModal = async () => {
+    if (!user) {
+      toast.error("Please sign in to submit feedback.");
+      navigate("/signin", { state: { from: location.pathname } });
+      return;
+    }
     setIsModalOpen(true);
     if (user) {
       try {
@@ -116,14 +124,12 @@ export default function ClientFeedback() {
             Hear from the organizations that trust us to deliver excellence, drive operational efficiency, and architect scalable solutions.
           </p>
           
-          {user && (
-            <button 
-              onClick={openModal}
-              className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full font-bold text-sm flex items-center gap-2 transition-all shadow-lg shadow-orange-500/20 active:scale-95"
-            >
-              <Edit3 className="w-4 h-4" /> Add / Edit Your Feedback
-            </button>
-          )}
+          <button 
+            onClick={openModal}
+            className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full font-bold text-sm flex items-center gap-2 transition-all shadow-lg shadow-orange-500/20 active:scale-95"
+          >
+            <Edit3 className="w-4 h-4" /> Add / Edit Your Feedback
+          </button>
         </div>
 
         {/* Feedback Grid */}

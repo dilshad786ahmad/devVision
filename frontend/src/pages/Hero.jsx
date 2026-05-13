@@ -1,14 +1,20 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { Cloud, Lock, BarChart3, ArrowRight, Box, Layout } from "lucide-react";
+import { 
+  Cloud, Lock, BarChart3, ArrowRight, Box, Layout, 
+  Briefcase, Shield, Zap, Target, Rocket, Cpu, Code2, Globe, Heart, Smartphone 
+} from "lucide-react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import { CardSkeleton, HeroStackSkeleton, SkeletonBase } from "../components/Skeleton";
 import { API_BASE_URL } from "../apiConfig";
-//  check kr rha hun pura push hua hai ki nhi
-const IconMap = { Cloud, Lock, BarChart3, Box, Layout };
+
+const IconMap = { 
+  Cloud, Lock, BarChart3, Box, Layout, 
+  Briefcase, Shield, Zap, Target, Rocket, Cpu, Code2, Globe, Heart, Smartphone 
+};
 
 const DynamicIcon = ({ name, className }) => {
   const IconComponent = IconMap[name] || Layout;

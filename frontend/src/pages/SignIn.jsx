@@ -77,9 +77,10 @@ export default function SignIn() {
 
   React.useEffect(() => {
     if (user) {
-      navigate("/");
+      const from = location.state?.from || "/";
+      navigate(from);
     }
-  }, [user, navigate]);
+  }, [user, navigate, location.state]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -145,26 +146,27 @@ export default function SignIn() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-4 backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
             <span className="text-[10px] font-black tracking-[0.3em] text-gray-300 uppercase">
-              Secure Access
+              4 Years of Excellence
             </span>
           </div>
           
           <h2 className="text-4xl md:text-6xl font-black text-white leading-[1.1] tracking-tighter">
-            Elevate Your <br /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Workflow</span> Today
+            Bringing 4+ Years of <br /> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Expertise</span> to You
           </h2>
           
           <p className="text-gray-400 text-lg font-light leading-relaxed max-w-md">
-            Join thousands of professionals who have streamlined their operations and secured their digital assets with our platform.
+            As a dedicated freelancer, I've spent over 4 years refining my craft, delivering high-end digital solutions that drive real results.
           </p>
 
           <div className="flex items-center gap-4 text-gray-500">
-            <div className="flex -space-x-3">
-              {[1,2,3,4].map(i => (
-                <img key={i} src={`https://i.pravatar.cc/100?u=${i}`} className="w-10 h-10 rounded-full border-2 border-[#050505]" alt="user" />
-              ))}
-            </div>
-            <p className="text-xs font-medium">Joined by <span className="text-white">10k+</span> creators</p>
+             <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                <span className="text-2xl font-black text-orange-500">4+</span>
+             </div>
+             <div>
+                <p className="text-white font-bold text-sm">Years Experience</p>
+                <p className="text-[10px] uppercase tracking-widest text-gray-600">Freelance Mastery</p>
+             </div>
           </div>
         </motion.div>
 
