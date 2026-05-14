@@ -6,7 +6,7 @@ import { Twitter, Linkedin, Instagram } from '../components/BrandIcons';
 import { Link, useNavigate } from 'react-router-dom';
 import { CardSkeleton } from '../components/Skeleton';
 import { useTheme } from '../context/ThemeContext';
-import { API_BASE_URL } from '../apiConfig';
+import { API_BASE_URL, resolveUrl } from '../apiConfig';
 
 const Team = () => {
     const [team, setTeam] = useState([]);
@@ -123,7 +123,7 @@ const Team = () => {
                                 <div className="overflow-hidden h-56 relative">
                                     <div className="absolute inset-0 z-10 opacity-80 group-hover:opacity-60 transition-opacity bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
                                     <img
-                                        src={member.image || '/placeholder-team.jpg'}
+                                        src={resolveUrl(member.image) || '/placeholder-team.jpg'}
                                         alt={member.name}
                                         width="400"
                                         height="300"

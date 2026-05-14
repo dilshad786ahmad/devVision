@@ -57,7 +57,8 @@ exports.uploadResume = async (req, res) => {
             return res.status(400).json({ success: false, message: "No file uploaded" });
         }
 
-        const fileUrl = `/uploads/${req.file.filename}`;
+        const fileUrl = req.file.path.startsWith('http') ? req.file.path : `/uploads/${req.file.filename}`;
+
         
         // Update the about page content with the new resume link
         const content = await AboutPageContent.findOne();
@@ -93,7 +94,8 @@ exports.uploadImage = async (req, res) => {
             return res.status(400).json({ success: false, message: "No file uploaded" });
         }
 
-        const fileUrl = `/uploads/${req.file.filename}`;
+        const fileUrl = req.file.path.startsWith('http') ? req.file.path : `/uploads/${req.file.filename}`;
+
         res.status(200).json({ 
             success: true, 
             message: "Image uploaded successfully", 

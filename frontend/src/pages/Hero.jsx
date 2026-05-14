@@ -9,7 +9,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import { CardSkeleton, HeroStackSkeleton, SkeletonBase } from "../components/Skeleton";
-import { API_BASE_URL } from "../apiConfig";
+import { API_BASE_URL, resolveUrl } from "../apiConfig";
 
 const IconMap = { 
   Cloud, Lock, BarChart3, Box, Layout, 
@@ -65,7 +65,7 @@ export default function Home() {
     fetchData();
   }, []);
 
-  const images = content?.hero?.images?.length > 0 ? content.hero.images.map(img => `${img}?auto=format&fit=crop&q=80&w=1200&fm=webp`) : [];
+  const images = content?.hero?.images?.length > 0 ? content.hero.images.map(img => `${resolveUrl(img)}?auto=format&fit=crop&q=80&w=1200&fm=webp`) : [];
 
   // Auto change background
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function Home() {
   const hero = content?.hero || {};
   const cards = content?.introCards || [];
 
-  const cardImages = hero.cardImages?.length > 0 ? hero.cardImages.map(img => `${img}?auto=format&fit=crop&q=80&w=800&fm=webp`) : [];
+  const cardImages = hero.cardImages?.length > 0 ? hero.cardImages.map(img => `${resolveUrl(img)}?auto=format&fit=crop&q=80&w=800&fm=webp`) : [];
 
   useEffect(() => {
     if (cardImages.length <= 1) return;
@@ -263,7 +263,7 @@ export default function Home() {
 
                           <div className="relative h-full w-full rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)] bg-[#0a0a0a] group cursor-pointer">
                                   <img 
-                                      src={cardImages[cardIndex] || null} 
+                                      src={resolveUrl(cardImages[cardIndex]) || null} 
                                       alt={`Hero Card ${cardIndex}`} 
                                       width="450"
                                       height="560"

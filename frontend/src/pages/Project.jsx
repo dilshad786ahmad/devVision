@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import Breadcrumb from "../components/Breadcrumb";
 import { CardSkeleton } from "../components/Skeleton";
-import { API_BASE_URL } from "../apiConfig";
+import { API_BASE_URL, resolveUrl } from "../apiConfig";
 
 export default function FeaturedProjects() {
   const [content, setContent] = useState(null);
@@ -193,7 +193,7 @@ export default function FeaturedProjects() {
                     >
                         <div className="relative aspect-video overflow-hidden">
                             <img
-                                src={project.image || '/placeholder-project.jpg'}
+                                src={resolveUrl(project.image) || '/placeholder-project.jpg'}
                                 loading={index < 4 ? "eager" : "lazy"}
                                 fetchPriority={index < 4 ? "high" : "auto"}
                                 decoding="async"

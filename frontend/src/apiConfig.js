@@ -7,3 +7,11 @@
 export const API_BASE_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000"
     : "https://devisions.onrender.com";
+
+// Helper to resolve image URLs (handles both local uploads and cloud storage)
+export const resolveUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('http')) return url;
+    return `${API_BASE_URL}${url}`;
+};
+

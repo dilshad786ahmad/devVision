@@ -8,7 +8,8 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { SkeletonBase, TextSkeleton } from '../components/Skeleton';
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from '../apiConfig';
+import { API_BASE_URL, resolveUrl } from '../apiConfig';
+
 
 const TeamDetails = () => {
     const { id } = useParams();
@@ -84,7 +85,7 @@ const TeamDetails = () => {
                         <div className="sticky top-24">
                             <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                                 <img 
-                                    src={member.image} 
+                                    src={resolveUrl(member.image)} 
                                     alt={member.name}
                                     className="w-full h-auto object-cover aspect-[4/5]"
                                 />
@@ -229,7 +230,7 @@ const TeamDetails = () => {
                                                 className="group bg-[#0a0a0a] rounded-3xl overflow-hidden shadow-xl flex flex-col"
                                             >
                                                 <div className="relative h-48 overflow-hidden">
-                                                    <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                                    <img src={resolveUrl(project.image)} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
                                                 </div>
                                                 <div className="p-6 flex-1 flex flex-col">
