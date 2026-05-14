@@ -3,10 +3,10 @@
 // The root vercel.json is configured to proxy /api and /uploads to the Render backend.
 //  cherck
 // asdasdasd
-// Force redeploy with new backend URL: https://devisions.onrender.com
+// Force redeploy with new backend URL: https://website-me.onrender.com
 export const API_BASE_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000"
-    : "https://devisions.onrender.com";
+    : "https://website-me.onrender.com";
 
 // Helper to resolve image URLs (handles both local uploads and cloud storage)
 export const resolveUrl = (url) => {
