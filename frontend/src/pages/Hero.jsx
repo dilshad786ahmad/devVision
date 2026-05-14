@@ -267,8 +267,9 @@ export default function Home() {
                                       alt={`Hero Card ${cardIndex}`} 
                                       width="450"
                                       height="560"
-                                      fetchPriority={cardIndex === 0 ? "high" : "auto"}
-                                      loading={cardIndex === 0 ? "eager" : "lazy"}
+                                      fetchPriority="high"
+                                      loading="eager"
+                                      decoding="async"
                                       referrerPolicy="no-referrer"
                                       crossOrigin="anonymous"
                                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 

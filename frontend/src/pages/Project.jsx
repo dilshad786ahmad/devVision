@@ -194,7 +194,9 @@ export default function FeaturedProjects() {
                         <div className="relative aspect-video overflow-hidden">
                             <img
                                 src={project.image || '/placeholder-project.jpg'}
-                                loading="lazy"
+                                loading={index < 4 ? "eager" : "lazy"}
+                                fetchPriority={index < 4 ? "high" : "auto"}
+                                decoding="async"
                                 width="400"
                                 height="300"
                                 alt={project.title}
