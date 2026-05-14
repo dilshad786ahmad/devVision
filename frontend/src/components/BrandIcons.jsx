@@ -1,7 +1,9 @@
 import React from 'react';
 
-export const GitHub = (props) => (
+export const GitHub = ({ size = 24, ...props }) => (
   <svg
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -14,8 +16,10 @@ export const GitHub = (props) => (
   </svg>
 );
 
-export const Twitter = (props) => (
+export const Twitter = ({ size = 24, ...props }) => (
   <svg
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -28,8 +32,10 @@ export const Twitter = (props) => (
   </svg>
 );
 
-export const Linkedin = (props) => (
+export const Linkedin = ({ size = 24, ...props }) => (
   <svg
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -44,8 +50,10 @@ export const Linkedin = (props) => (
   </svg>
 );
 
-export const Instagram = (props) => (
+export const Instagram = ({ size = 24, ...props }) => (
   <svg
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

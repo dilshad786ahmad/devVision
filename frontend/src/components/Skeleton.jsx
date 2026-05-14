@@ -116,4 +116,42 @@ export const AdminGridSkeleton = ({ count = 3 }) => (
   </div>
 );
 
+export const GlobalSkeleton = () => (
+  <div className="min-h-screen bg-[#050505] overflow-hidden">
+    {/* Mock Header */}
+    <div className="fixed top-6 left-0 w-full z-50 px-6">
+      <div className="max-w-7xl mx-auto bg-white/5 border border-white/10 rounded-3xl h-16 animate-pulse" />
+    </div>
+
+    <div className="max-w-7xl mx-auto px-6 pt-32 space-y-24">
+      {/* Mock Hero */}
+      <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="space-y-8">
+          <SkeletonBase className="h-6 w-32 rounded-full" />
+          <SkeletonBase className="h-20 w-full rounded-2xl" />
+          <SkeletonBase className="h-20 w-4/5 rounded-2xl" />
+          <div className="space-y-4 pt-4">
+            <SkeletonBase className="h-5 w-full rounded-md" />
+            <SkeletonBase className="h-5 w-5/6 rounded-md" />
+          </div>
+          <div className="flex gap-4 pt-6">
+            <SkeletonBase className="h-14 w-40 rounded-xl" />
+            <SkeletonBase className="h-14 w-40 rounded-xl" />
+          </div>
+        </div>
+        <div className="relative aspect-square">
+          <HeroStackSkeleton />
+        </div>
+      </div>
+
+      {/* Mock Section (Cards) */}
+      <div className="grid md:grid-cols-3 gap-8">
+        {[1, 2, 3].map(i => (
+          <CardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 export default SkeletonBase;

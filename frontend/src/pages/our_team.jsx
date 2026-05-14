@@ -57,7 +57,7 @@ const Team = () => {
     };
 
     return (
-        <section className="py-20 px-6 relative overflow-hidden font-sans bg-[#050505] text-white">
+        <section className={`py-20 px-6 relative overflow-hidden font-sans ${isDarkMode ? 'bg-[#050505] text-white' : 'bg-[#f8fafc] text-[#050505]'} transition-colors duration-500`}>
             {/* Background ambient glows */}
             <div className={`absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full blur-[150px] -z-10 mix-blend-screen pointer-events-none ${isDarkMode ? 'bg-blue-600/10' : 'bg-blue-200/20'}`}></div>
 
@@ -81,7 +81,7 @@ const Team = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-3xl md:text-4xl font-extrabold mb-6 tracking-tight text-white"
+                        className={`text-3xl md:text-4xl font-extrabold mb-6 tracking-tight ${isDarkMode ? 'text-white' : 'text-[#050505]'}`}
                     >
                         Our Team
                     </motion.h2>
@@ -117,7 +117,7 @@ const Team = () => {
                                 key={member._id}
                                 variants={itemVariants}
                                 whileHover={{ y: -10 }}
-                                className="group rounded-3xl overflow-hidden transition-all duration-500 backdrop-blur-xl flex flex-col text-left bg-[#0a0a0a] hover:shadow-[0_15px_40px_-10px_rgba(59,130,246,0.15)]"
+                                className={`group rounded-3xl overflow-hidden transition-all duration-500 backdrop-blur-xl flex flex-col text-left ${isDarkMode ? 'bg-[#0a0a0a]' : 'bg-white border border-black/5'} hover:shadow-[0_15px_40px_-10px_rgba(59,130,246,0.15)]`}
                             >
                                 {/* Image */}
                                 <div className="overflow-hidden h-56 relative">
@@ -128,18 +128,24 @@ const Team = () => {
                                         width="400"
                                         height="300"
                                         loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
                                     />
-                                    {/* Social icons overlay */}
+                                    {/* Social icons overlay - Premium Design */}
                                     <div className="absolute top-4 right-4 flex flex-col gap-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-x-4 group-hover:translate-x-0 transition-transform">
                                         {member.socialLinks?.linkedin && (
-                                            <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-blue-600 text-white shadow-lg">
-                                                <Linkedin size={18} />
+                                            <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-xl hover:bg-blue-600 hover:border-blue-600 hover:scale-110 active:scale-95 transition-all group/icon" title="LinkedIn">
+                                                <Linkedin size={16} />
                                             </a>
                                         )}
                                         {member.socialLinks?.twitter && (
-                                            <a href={member.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-sky-500 text-white shadow-lg">
-                                                <Twitter size={18} />
+                                            <a href={member.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-xl hover:bg-sky-500 hover:border-sky-500 hover:scale-110 active:scale-95 transition-all group/icon" title="Twitter">
+                                                <Twitter size={16} />
+                                            </a>
+                                        )}
+                                        {member.socialLinks?.instagram && (
+                                            <a href={member.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-xl hover:bg-pink-500 hover:border-pink-500 hover:scale-110 active:scale-95 transition-all group/icon" title="Instagram">
+                                                <Instagram size={16} />
                                             </a>
                                         )}
                                     </div>
@@ -147,7 +153,7 @@ const Team = () => {
 
                                 {/* Content */}
                                 <div className="p-5 flex flex-col flex-grow relative z-20">
-                                    <h3 className="text-2xl font-bold mb-1 transition-colors text-white group-hover:text-blue-400">
+                                    <h3 className={`text-2xl font-bold mb-1 transition-colors ${isDarkMode ? 'text-white' : 'text-[#050505]'} group-hover:text-blue-400`}>
                                         {member.name}
                                     </h3>
 

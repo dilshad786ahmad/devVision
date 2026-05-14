@@ -22,6 +22,7 @@ export default function AdminHeader() {
     { name: 'Feedback', path: '/admin/my/feedback', icon: Sparkles },
     { name: 'Team', path: '/admin/my/team', icon: Users },
     { name: 'Legal', path: '/admin/my/legal', icon: Shield },
+    { name: 'Why Website', path: '/admin/my/why-website', icon: Sparkles },
     { name: 'Dashboard', path: '/admin', icon: Sparkles },
   ];
 

@@ -7,21 +7,22 @@ exports.getSkillsPageContent = async (req, res) => {
         if (!content) {
             content = await SkillsPageContent.create({
                 header: {
-                    description: "A comprehensive overview of my technical expertise and professional capabilities."
+                    description: "The 2026 Full Stack + AI Developer Roadmap. A comprehensive guide to modern development."
                 },
-                technicalSkills: [
-                    { name: "React", desc: "Frontend Framework", icon: "Code" },
-                    { name: "Node.js", desc: "Runtime Environment", icon: "Server" }
+                categories: [
+                    {
+                        title: "CORE MERN STACK",
+                        description: "Foundational technologies for modern web apps.",
+                        skills: [
+                            { name: "MongoDB", description: "NoSQL database for scalable app data storage.", icon: "Database" },
+                            { name: "Express.js", description: "Backend framework for APIs and server logic.", icon: "Server" },
+                            { name: "React.js", description: "Frontend library for modern interactive UI.", icon: "Layout" },
+                            { name: "Node.js", description: "JavaScript runtime for backend development.", icon: "Cpu" }
+                        ]
+                    }
                 ],
-                softSkills: [
-                    { name: "Collaboration", icon: "Users" },
-                    { name: "Communication", icon: "MessageCircle" }
-                ],
-                cta: {
-                    description: "I'm always learning new technologies. Let's discuss how I can adapt."
-                },
-                codeBox: {
-                    code: 'const developer = {\n  name: "Pro Portfolio",\n  role: "Full Stack Engineer",\n  skills: ["React", "Node", "Cloud"],\n  readyForWork: true\n};'
+                bestCombo: {
+                    items: ["MERN", "TypeScript", "PostgreSQL", "Next.js", "AI Integration", "Docker", "AWS"]
                 }
             });
         }
@@ -41,30 +42,20 @@ exports.updateSkillsHeader = async (req, res) => {
     }
 };
 
-// Update Technical Skills
-exports.updateTechSkills = async (req, res) => {
+// Update Categories
+exports.updateSkillsCategories = async (req, res) => {
     try {
-        const content = await SkillsPageContent.findOneAndUpdate({}, { technicalSkills: req.body.skills }, { new: true, upsert: true });
+        const content = await SkillsPageContent.findOneAndUpdate({}, { categories: req.body.categories }, { new: true, upsert: true });
         res.status(200).json({ success: true, data: content });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 };
 
-// Update Soft Skills
-exports.updateSoftSkills = async (req, res) => {
+// Update Best Combo
+exports.updateBestCombo = async (req, res) => {
     try {
-        const content = await SkillsPageContent.findOneAndUpdate({}, { softSkills: req.body.skills }, { new: true, upsert: true });
-        res.status(200).json({ success: true, data: content });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-};
-
-// Update CTA & CodeBox
-exports.updateSkillsMisc = async (req, res) => {
-    try {
-        const content = await SkillsPageContent.findOneAndUpdate({}, { cta: req.body.cta, codeBox: req.body.codeBox }, { new: true, upsert: true });
+        const content = await SkillsPageContent.findOneAndUpdate({}, { bestCombo: req.body.bestCombo }, { new: true, upsert: true });
         res.status(200).json({ success: true, data: content });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

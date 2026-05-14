@@ -87,6 +87,8 @@ const TeamDetails = () => {
                                 <img 
                                     src={resolveUrl(member.image)} 
                                     alt={member.name}
+                                    loading="lazy"
+                                    decoding="async"
                                     className="w-full h-auto object-cover aspect-[4/5]"
                                 />
                                 <div className="absolute top-4 right-4">
@@ -118,19 +120,34 @@ const TeamDetails = () => {
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex space-x-4 mt-8 pt-6">
+                                <div className="flex items-center gap-3 mt-8 pt-6 border-t border-white/5">
                                     {member.socialLinks?.twitter && (
-                                        <a href={member.socialLinks.twitter} className="p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all">
+                                        <a 
+                                            href={member.socialLinks.twitter} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-sky-400 hover:bg-sky-500 hover:text-white hover:border-sky-500 transition-all duration-300 shadow-lg"
+                                        >
                                             <Twitter size={20} />
                                         </a>
                                     )}
                                     {member.socialLinks?.linkedin && (
-                                        <a href={member.socialLinks.linkedin} className="p-2 rounded-lg bg-blue-600/10 text-blue-600 hover:bg-blue-600 hover:text-white transition-all">
+                                        <a 
+                                            href={member.socialLinks.linkedin} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-blue-500 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300 shadow-lg"
+                                        >
                                             <Linkedin size={20} />
                                         </a>
                                     )}
                                     {member.socialLinks?.instagram && (
-                                        <a href={member.socialLinks.instagram} className="p-2 rounded-lg bg-pink-500/10 text-pink-500 hover:bg-pink-500 hover:text-white transition-all">
+                                        <a 
+                                            href={member.socialLinks.instagram} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-pink-500 hover:bg-pink-500 hover:text-white hover:border-pink-500 transition-all duration-300 shadow-lg"
+                                        >
                                             <Instagram size={20} />
                                         </a>
                                     )}
@@ -230,7 +247,13 @@ const TeamDetails = () => {
                                                 className="group bg-[#0a0a0a] rounded-3xl overflow-hidden shadow-xl flex flex-col"
                                             >
                                                 <div className="relative h-48 overflow-hidden">
-                                                    <img src={resolveUrl(project.image)} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                                    <img 
+                                                        src={resolveUrl(project.image)} 
+                                                        alt={project.title} 
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                                    />
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
                                                 </div>
                                                 <div className="p-6 flex-1 flex flex-col">

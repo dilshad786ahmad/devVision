@@ -108,17 +108,65 @@ export default function ServiceDetails() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[400px] bg-orange-500/[0.02] rounded-full blur-[150px] -z-10 pointer-events-none rotate-45"></div>
 
       {/* Navbar Spacing */}
-      <div className="h-28 md:h-24"></div>
+      <div className="h-16 md:h-12"></div>
 
       {/* Hero Section */}
-     
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-16 pb-24 relative z-10">
+        <Breadcrumb className="mb-10" />
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
+              <span className="text-[10px] font-black tracking-[0.3em] text-gray-300 uppercase">
+                {data.subTitle}
+              </span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-8 tracking-tighter leading-[1.1]">
+              {data.title}
+            </h1>
+            <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed mb-12 max-w-xl">
+              {data.description}
+            </p>
+            <div className="flex flex-wrap gap-5">
+              <button 
+                onClick={handleConsultClick}
+                className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 shadow-[0_10px_30px_rgba(249,115,22,0.3)] hover:-translate-y-1"
+              >
+                Start Consultation
+              </button>
+            </div>
+          </motion.div>
 
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="relative"
+          >
+            <div className="absolute -inset-4 bg-orange-500/10 rounded-[4rem] blur-3xl opacity-50"></div>
+            <div className="relative rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] aspect-[4/5] lg:aspect-square">
+              <img 
+                src={data.mainImage} 
+                alt={data.title} 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/60 via-transparent to-transparent"></div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
       {/* Features Grid Section */}
-      <section className="py-40 relative z-10">
+      <section className="py-20 relative z-10">
         <div className="absolute inset-0 bg-white/[0.01] -skew-y-3 -z-10 border-y border-white/5"></div>
         
         <div className="max-w-7xl mx-auto px-6 lg:px-20">
-          <div className="flex flex-col items-center mb-24 text-center">
+          <div className="flex flex-col items-center mb-16 text-center">
              <div className="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center mb-8 border border-orange-500/20">
                 <Cpu className="text-orange-500 w-8 h-8" />
              </div>

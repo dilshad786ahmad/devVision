@@ -47,6 +47,7 @@ exports.uploadImage = async (req, res) => {
         const imageUrl = req.file.path.startsWith('http') ? req.file.path : `/uploads/${req.file.filename}`;
         res.status(200).json({ success: true, url: imageUrl });
     } catch (error) {
+        console.error("Project image upload error:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };

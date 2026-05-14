@@ -54,3 +54,22 @@ exports.updateSocialLinks = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+// Image Upload
+exports.uploadImage = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "No file uploaded" });
+        }
+        
+        // If it's Cloudinary, req.file.path will be a URL starting with http
+        // If it's local, req.file.path will be an absolute system path, so we use filename
+        const imageUrl = req.file.path.startsWith('http') 
+            ? req.file.path 
+            : `/uploads/${req.file.filename}`;
+            
+        res.status(200).json({ success: true, url: imageUrl });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

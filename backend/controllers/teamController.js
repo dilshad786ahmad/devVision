@@ -44,13 +44,13 @@ exports.createTeamMember = async (req, res) => {
         if (req.files && req.files['projectImages'] && projects) {
             let fileIndex = 0;
             projects = projects.map(project => {
-                // If project had a local temporary file reference or needs an update
-                if (project.hasNewImage && fileIndex < req.files['projectImages'].length) {
+                const hasNew = project.hasNewImage === true || project.hasNewImage === 'true';
+                if (hasNew && fileIndex < req.files['projectImages'].length) {
                     const file = req.files['projectImages'][fileIndex];
                     project.image = file.path.startsWith('http') ? file.path : `/uploads/${file.filename}`;
                     fileIndex++;
                 }
-                delete project.hasNewImage; // Clean up flag
+                delete project.hasNewImage;
                 return project;
             });
         }
@@ -61,7 +61,8 @@ exports.createTeamMember = async (req, res) => {
         await newMember.save();
         res.status(201).json(newMember);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error("Create team member error:", error);
+        res.status(400).json({ success: false, message: error.message });
     }
 };
 
@@ -85,9 +86,10 @@ exports.updateTeamMember = async (req, res) => {
         if (req.files && req.files['projectImages'] && data.projects) {
             let fileIndex = 0;
             data.projects = data.projects.map(project => {
-                if (project.hasNewImage && fileIndex < req.files['projectImages'].length) {
+                const hasNew = project.hasNewImage === true || project.hasNewImage === 'true';
+                if (hasNew && fileIndex < req.files['projectImages'].length) {
                     const file = req.files['projectImages'][fileIndex];
-                    data.projects[fileIndex].image = file.path.startsWith('http') ? file.path : `/uploads/${file.filename}`;
+                    project.image = file.path.startsWith('http') ? file.path : `/uploads/${file.filename}`;
                     fileIndex++;
                 }
                 delete project.hasNewImage;
@@ -101,11 +103,12 @@ exports.updateTeamMember = async (req, res) => {
             { new: true }
         );
         if (!updatedMember) {
-            return res.status(404).json({ message: 'Team member not found' });
+            return res.status(404).json({ success: false, message: 'Team member not found' });
         }
         res.status(200).json(updatedMember);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error("Update team member error:", error);
+        res.status(400).json({ success: false, message: error.message });
     }
 };
 

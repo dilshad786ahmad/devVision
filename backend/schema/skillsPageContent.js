@@ -2,31 +2,27 @@ const mongoose = require("mongoose");
 
 const skillItemSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    desc: { type: String },
+    description: { type: String },
     icon: { type: String, default: "Code" }
 });
 
-const softSkillSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    icon: { type: String, default: "Users" }
+const skillCategorySchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    description: { type: String },
+    skills: [skillItemSchema]
 });
 
 const skillsPageContentSchema = new mongoose.Schema({
     header: {
         badgeText: { type: String, default: "Capabilities" },
-        title: { type: String, default: "My Skills" },
+        title: { type: String, default: "Expertise Roadmap" },
         description: { type: String, required: true }
     },
-    technicalSkills: [skillItemSchema],
-    softSkills: [softSkillSchema],
-    cta: {
-        title: { type: String, default: "Looking for a specific skill?" },
-        description: { type: String, required: true },
-        resumeLink: { type: String },
-        contactLink: { type: String }
-    },
-    codeBox: {
-        code: { type: String, required: true }
+    categories: [skillCategorySchema],
+    bestCombo: {
+        title: { type: String, default: "🔥 Best Combo for 2026" },
+        description: { type: String },
+        items: [{ type: String }]
     }
 }, { timestamps: true });
 

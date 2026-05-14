@@ -4,7 +4,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Header";
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from "./Admin/ProtectedRoute";
-import AdminHeader from "./components/AdminHeader";
+import AdminLayout from "./Admin/AdminLayout";
+import AdminErrorBoundary from "./Admin/AdminErrorBoundary";
 
 // ─── Lazy-loaded Public Pages ───────────────────────────────────────────────
 const Container       = lazy(() => import("./pages/Container"));
@@ -41,13 +42,12 @@ const AdminTeam           = lazy(() => import("./Admin/AdminTeam"));
 const AdminServiceDetails = lazy(() => import("./Admin/AdminServiceDetails"));
 const AdminFeedback       = lazy(() => import("./Admin/AdminFeedback"));
 const AdminLegal          = lazy(() => import("./Admin/AdminLegal"));
+const AdminWhyWebsite      = lazy(() => import("./Admin/AdminWhyWebsite"));
 
-// ─── Minimal page-transition fallback (invisible to user) ────────────────────
-const PageFallback = () => (
-  <div className="fixed inset-0 bg-[#050505] flex items-center justify-center z-[9999] pointer-events-none">
-    <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 border-t-orange-500 animate-spin" />
-  </div>
-);
+import { GlobalSkeleton } from "./components/Skeleton";
+
+// ─── Minimal page-transition fallback (Premium Skeleton) ────────────────────
+const PageFallback = () => <GlobalSkeleton />;
 
 function App() {
   const location = useLocation();
@@ -57,22 +57,43 @@ function App() {
   return (
     <>
       <Toaster 
-        position="top-center" 
+        position="bottom-center" 
         reverseOrder={false} 
         toastOptions={{
+          className: 'premium-toast',
           style: {
             background: 'var(--toast-bg)',
             color: 'var(--toast-color)',
-            borderRadius: '16px',
-            padding: '16px',
-            border: 'var(--toast-border)'
-          }
+            borderRadius: '4px',
+            padding: '16px 24px',
+            border: '1px solid var(--toast-border)',
+            fontSize: '11px',
+            fontWeight: '900',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+            backdropFilter: 'blur(10px)',
+            maxWidth: '400px'
+          },
+          success: {
+            style: {
+              borderLeft: '4px solid #f97316',
+            },
+            iconTheme: {
+              primary: '#f97316',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            style: {
+              borderLeft: '4px solid #ef4444',
+            },
+          },
         }}
       />
       <ScrollToTop />
 
       {!isAdminRoute && !isAuthRoute && <Navbar />}
-      {isAdminRoute && <AdminHeader />}
 
       <Suspense fallback={<PageFallback />}>
         <Routes>
@@ -97,19 +118,22 @@ function App() {
 
 
           {/* --- Protected Admin Dashboard Routes --- */}
-          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/admin/my/home" element={<ProtectedRoute><AdminHome /></ProtectedRoute>} />
-          <Route path="/admin/my/about" element={<ProtectedRoute><AdminAbout /></ProtectedRoute>} />
-          <Route path="/admin/my/services" element={<ProtectedRoute><AdminServices /></ProtectedRoute>} />
-          <Route path="/admin/my/skills" element={<ProtectedRoute><AdminSkills /></ProtectedRoute>} />
-          <Route path="/admin/my/projects" element={<ProtectedRoute><AdminProjects /></ProtectedRoute>} />
-          <Route path="/admin/my/prices" element={<ProtectedRoute><AdminPrices /></ProtectedRoute>} />
-          <Route path="/admin/my/contact" element={<ProtectedRoute><AdminContact /></ProtectedRoute>} />
-          <Route path="/admin/my/feedback" element={<ProtectedRoute><AdminFeedback /></ProtectedRoute>} />
-          <Route path="/admin/my/team" element={<ProtectedRoute><AdminTeam /></ProtectedRoute>} />
-          <Route path="/admin/service-details/:serviceId" element={<ProtectedRoute><AdminServiceDetails /></ProtectedRoute>} />
-          <Route path="/admin/project-details/:projectId" element={<ProtectedRoute><AdminProjectDetails /></ProtectedRoute>} />
-          <Route path="/admin/my/legal" element={<ProtectedRoute><AdminLegal /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><AdminErrorBoundary><AdminLayout /></AdminErrorBoundary></ProtectedRoute>}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="my/home" element={<AdminHome />} />
+            <Route path="my/about" element={<AdminAbout />} />
+            <Route path="my/services" element={<AdminServices />} />
+            <Route path="my/skills" element={<AdminSkills />} />
+            <Route path="my/projects" element={<AdminProjects />} />
+            <Route path="my/prices" element={<AdminPrices />} />
+            <Route path="my/contact" element={<AdminContact />} />
+            <Route path="my/feedback" element={<AdminFeedback />} />
+            <Route path="my/team" element={<AdminTeam />} />
+            <Route path="my/legal" element={<AdminLegal />} />
+            <Route path="my/why-website" element={<AdminWhyWebsite />} />
+            <Route path="service-details/:serviceId" element={<AdminServiceDetails />} />
+            <Route path="project-details/:projectId" element={<AdminProjectDetails />} />
+          </Route>
 
           {/* --- 404 Not Found Catch-all --- */}
           <Route path="*" element={<NotFound />} />

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE_URL } from '../apiConfig';
 import {
   Search, Bell, HelpCircle, Users, ClipboardList, CheckCircle2,
-  Calendar, Edit2, Trash2, Menu, X, ArrowRight
+  Calendar, Edit2, Trash2, Menu, X, ArrowRight, Save, RotateCw
 } from 'lucide-react';
 
 // --- Skeleton Component for Table Rows ---
@@ -36,19 +36,22 @@ const ColorMap = {
     bg: "bg-blue-500/10",
     border: "border-blue-500/20",
     text: "text-blue-400",
-    glow: "shadow-[0_0_20px_rgba(59,130,246,0.1)]"
+    glow: "shadow-[0_0_20px_rgba(59,130,246,0.1)]",
+    hoverGlow: "group-hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]"
   },
   orange: {
     bg: "bg-orange-500/10",
     border: "border-orange-500/20",
     text: "text-orange-400",
-    glow: "shadow-[0_0_20px_rgba(249,115,22,0.1)]"
+    glow: "shadow-[0_0_20px_rgba(249,115,22,0.1)]",
+    hoverGlow: "group-hover:shadow-[0_0_30px_rgba(249,115,22,0.2)]"
   },
   emerald: {
     bg: "bg-emerald-500/10",
     border: "border-emerald-500/20",
     text: "text-emerald-400",
-    glow: "shadow-[0_0_20px_rgba(16,185,129,0.1)]"
+    glow: "shadow-[0_0_20px_rgba(16,185,129,0.1)]",
+    hoverGlow: "group-hover:shadow-[0_0_30px_rgba(16,185,129,0.2)]"
   }
 };
 
@@ -144,9 +147,7 @@ export default function AdminDashboard() {
   const handleButtonClick = () => { if (dateInputRef.current) dateInputRef.current.showPicker(); };
 
   return (
-    <div className="min-h-screen bg-[#050505] font-sans text-white relative overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[150px] -z-10 mix-blend-screen pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[150px] -z-10 mix-blend-screen pointer-events-none"></div>
+    <div className="relative">
 
       <AnimatePresence>
         {editModalData && (
@@ -159,7 +160,7 @@ export default function AdminDashboard() {
               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-500 to-orange-600" />
               <div className="flex justify-between items-center mb-8">
                 <h3 className="text-2xl font-black italic">Refine Lead</h3>
-                <button onClick={() => setEditModalData(null)} className="text-gray-500 hover:text-white transition-colors"><X className="w-6 h-6" /></button>
+                <motion.button whileHover={{ rotate: 90, scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setEditModalData(null)} className="text-gray-500 hover:text-white transition-colors"><X className="w-6 h-6" /></motion.button>
               </div>
               <div className="space-y-6">
                 <div>
@@ -187,21 +188,38 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <div className="mt-10 flex gap-4">
-                <button onClick={() => setEditModalData(null)} className="flex-1 py-4 bg-white/5 hover:bg-white/10 text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/10 transition-all">Dismiss</button>
-                <button onClick={handleEditSubmit} className="flex-1 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg shadow-orange-500/20 transition-all">Synchronize</button>
+                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => setEditModalData(null)} className="flex-1 py-4 bg-white/5 hover:bg-white/10 text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/10 transition-all">Dismiss</motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(249,115,22,0.4)" }} 
+                  whileTap={{ scale: 0.98 }} 
+                  onClick={handleEditSubmit} 
+                  className="flex-1 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
+                >
+                  <RotateCw size={14} className="animate-spin-slow" /> Synchronize
+                </motion.button>
               </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
 
-      <main className="max-w-7xl mx-auto px-6 py-16 relative z-10">
+      <div className="max-w-6xl">
         <header className="mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md"
+          >
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
             <span className="text-[10px] font-black tracking-[0.3em] text-gray-400 uppercase">Strategic Infrastructure</span>
-          </div>
-          <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tighter">Command Center</h1>
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tighter"
+          >
+            Command Center
+          </motion.h1>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
@@ -212,7 +230,14 @@ export default function AdminDashboard() {
           ].map((stat, idx) => {
             const theme = ColorMap[stat.color];
             return (
-              <div key={idx} className={`bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-xl transition-all hover:bg-white/[0.04] ${theme.glow}`}>
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className={`group bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-xl transition-all hover:bg-white/[0.04] ${theme.glow} ${theme.hoverGlow}`}
+              >
                 {loading ? (
                   <div className="animate-pulse">
                     <div className="w-14 h-14 bg-white/5 rounded-2xl mb-8"></div>
@@ -221,21 +246,28 @@ export default function AdminDashboard() {
                 ) : (
                   <>
                     <div className="flex justify-between items-start mb-8">
-                      <div className={`w-14 h-14 ${theme.bg} ${theme.border} rounded-2xl flex items-center justify-center`}>
+                      <motion.div 
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        className={`w-14 h-14 ${theme.bg} ${theme.border} rounded-2xl flex items-center justify-center`}
+                      >
                         <stat.icon className={`w-7 h-7 ${theme.text}`} />
-                      </div>
+                      </motion.div>
                       <span className="text-[10px] font-black tracking-widest text-gray-500 uppercase">{stat.label}</span>
                     </div>
                     <h2 className="text-5xl font-black text-white">{stat.value}</h2>
                     <p className="text-xs text-gray-500 mt-3 font-medium">{stat.sub}</p>
                   </>
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
-        <div className="bg-white/[0.02] border border-white/10 rounded-[3rem] p-10 backdrop-blur-2xl relative shadow-3xl overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white/[0.02] border border-white/10 rounded-[3rem] p-10 backdrop-blur-2xl relative shadow-3xl overflow-hidden"
+        >
            <div className="flex flex-col lg:flex-row justify-between gap-8 mb-10">
               <div className="relative flex-1 max-w-lg">
                 <Search className="w-4 h-4 text-gray-500 absolute left-6 top-1/2 -translate-y-1/2" />
@@ -259,9 +291,14 @@ export default function AdminDashboard() {
                   <option value="offline" className="bg-[#0d0d0d]">Archived</option>
                 </select>
 
-                <button onClick={handleButtonClick} className="bg-white/5 border border-white/10 text-gray-400 text-[10px] font-black uppercase tracking-widest rounded-[1.25rem] px-8 py-4 flex items-center gap-4 hover:bg-white/10 transition-all">
+                <motion.button 
+                  whileHover={{ scale: 1.05, bg: "rgba(255,255,255,0.1)" }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleButtonClick} 
+                  className="bg-white/5 border border-white/10 text-gray-400 text-[10px] font-black uppercase tracking-widest rounded-[1.25rem] px-8 py-4 flex items-center gap-4 transition-all"
+                >
                   {dateRange.start || "Timeline"} <Calendar className="w-4 h-4 text-orange-500" />
-                </button>
+                </motion.button>
                 <input type="date" ref={dateInputRef} onChange={(e) => setDateRange({start: e.target.value, end: e.target.value})} className="absolute opacity-0 pointer-events-none" />
               </div>
            </div>
@@ -301,12 +338,19 @@ export default function AdminDashboard() {
                   {loading ? (
                     <TableSkeleton />
                   ) : users.length > 0 ? (
-                    users.map((user) => (
-                      <tr key={user._id} className="hover:bg-white/[0.02] transition-all group">
+                    users.map((user, idx) => (
+                      <motion.tr 
+                        key={user._id} 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="hover:bg-white/[0.02] transition-all group"
+                      >
                         <td className="px-8 py-8">
                           <div className="flex items-center gap-5">
                             {user.avatar ? (
-                              <img 
+                              <motion.img 
+                                whileHover={{ scale: 1.1 }}
                                 src={user.avatar || null} 
                                 alt={user.username} 
                                 className="w-14 h-14 rounded-[1.25rem] object-cover shadow-lg shadow-orange-500/10 border border-white/10"
@@ -316,9 +360,12 @@ export default function AdminDashboard() {
                                 }}
                               />
                             ) : (
-                              <div className="w-14 h-14 rounded-[1.25rem] bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-orange-500/20">
+                              <motion.div 
+                                whileHover={{ scale: 1.1, rotate: -5 }}
+                                className="w-14 h-14 rounded-[1.25rem] bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-orange-500/20"
+                              >
                                 {user.username?.charAt(0).toUpperCase() || '?'}
-                              </div>
+                              </motion.div>
                             )}
                             <div>
                               <div className="font-black text-white text-base flex items-center gap-2">
@@ -342,7 +389,12 @@ export default function AdminDashboard() {
                           <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-2">
                               <div className="h-1.5 w-16 bg-white/5 rounded-full overflow-hidden">
-                                <div className="h-full bg-orange-500" style={{ width: `${Math.min((user.loginCount || 0) * 10, 100)}%` }}></div>
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${Math.min((user.loginCount || 0) * 10, 100)}%` }}
+                                  transition={{ duration: 1, ease: "easeOut" }}
+                                  className="h-full bg-orange-500"
+                                ></motion.div>
                               </div>
                               <span className="text-[10px] font-black text-gray-400">{user.loginCount || 0} LOGINS</span>
                             </div>
@@ -359,11 +411,25 @@ export default function AdminDashboard() {
                         </td>
                         <td className="px-8 py-8 text-right">
                           <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all">
-                            <button onClick={() => setEditModalData({ id: user._id, query: user.query || "", leadStatus: user.leadStatus || "pending" })} className="p-3 rounded-[1rem] bg-white/5 hover:bg-blue-500/10 hover:text-blue-400 transition-all border border-white/5"><Edit2 size={18} /></button>
-                            <button onClick={() => handleDelete(user._id)} className="p-3 rounded-[1rem] bg-white/5 hover:bg-red-500/10 hover:text-red-400 transition-all border border-white/5"><Trash2 size={18} /></button>
+                            <motion.button 
+                              whileHover={{ scale: 1.1, bg: "rgba(59, 130, 246, 0.1)", color: "#60a5fa" }}
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => setEditModalData({ id: user._id, query: user.query || "", leadStatus: user.leadStatus || "pending" })} 
+                              className="p-3 rounded-[1rem] bg-white/5 text-gray-400 transition-all border border-white/5"
+                            >
+                              <Edit2 size={18} />
+                            </motion.button>
+                            <motion.button 
+                              whileHover={{ scale: 1.1, bg: "rgba(239, 68, 68, 0.1)", color: "#f87171" }}
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => handleDelete(user._id)} 
+                              className="p-3 rounded-[1rem] bg-white/5 text-gray-400 transition-all border border-white/5"
+                            >
+                              <Trash2 size={18} />
+                            </motion.button>
                           </div>
                         </td>
-                      </tr>
+                      </motion.tr>
                     ))
                   ) : (
                     <tr><td colSpan={5} className="text-center py-28 text-gray-600 font-light italic text-base">No Principal inquiries found.</td></tr>
@@ -375,13 +441,44 @@ export default function AdminDashboard() {
            <div className="mt-12 flex flex-col md:flex-row items-center justify-between gap-8">
               <span className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em]">{showingDetails}</span>
               <div className="flex gap-3">
-                <button disabled={!pagination.prev} onClick={() => setCurrentPage(p => p - 1)} className="px-8 py-3 bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl disabled:opacity-20 hover:bg-white/10 transition-all">Prev</button>
-                <div className="w-12 h-12 flex items-center justify-center bg-orange-500 text-white font-black rounded-xl shadow-xl">{pagination.currentPage || 1}</div>
-                <button disabled={!pagination.next} onClick={() => setCurrentPage(p => p + 1)} className="px-8 py-3 bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl disabled:opacity-20 hover:bg-white/10 transition-all">Next</button>
+                <motion.button 
+                  whileHover={{ scale: pagination.prev ? 1.05 : 1 }}
+                  whileTap={{ scale: pagination.prev ? 0.95 : 1 }}
+                  disabled={!pagination.prev} 
+                  onClick={() => setCurrentPage(p => p - 1)} 
+                  className="px-8 py-3 bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl disabled:opacity-20 hover:bg-white/10 transition-all"
+                >
+                  Prev
+                </motion.button>
+                <motion.div 
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: 1 }}
+                  className="w-12 h-12 flex items-center justify-center bg-orange-500 text-white font-black rounded-xl shadow-xl shadow-orange-500/20"
+                >
+                  {pagination.currentPage || 1}
+                </motion.div>
+                <motion.button 
+                  whileHover={{ scale: pagination.next ? 1.05 : 1 }}
+                  whileTap={{ scale: pagination.next ? 0.95 : 1 }}
+                  disabled={!pagination.next} 
+                  onClick={() => setCurrentPage(p => p + 1)} 
+                  className="px-8 py-3 bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl disabled:opacity-20 hover:bg-white/10 transition-all"
+                >
+                  Next
+                </motion.button>
               </div>
            </div>
-        </div>
-      </main>
+        </motion.div>
+      </div>
+      <style>{`
+        .animate-spin-slow {
+          animation: spin 3s linear infinite;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }

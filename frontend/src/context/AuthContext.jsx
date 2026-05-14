@@ -46,6 +46,11 @@ export const AuthProvider = ({ children }) => {
           const userData = res.data.user;
           setUser(userData);
           localStorage.setItem("user", JSON.stringify(userData));
+        } else {
+          // Session missing or expired (but returned 200)
+          setUser(null);
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
         }
       } catch (err) {
         console.log("No active session found");

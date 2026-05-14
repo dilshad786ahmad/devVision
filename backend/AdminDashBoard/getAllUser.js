@@ -47,7 +47,7 @@ exports.getAllUsers = async (req, res) => {
 
         const total = await Auth.countDocuments(query); 
 
-        let result = Auth.find(query).skip(startIndex).limit(limit);
+        let result = Auth.find(query).select("-password").skip(startIndex).limit(limit);
         
         // Sorting: Agar sort nahi hai, toh Last Active user sabse upar dikhega
         if (sort) {

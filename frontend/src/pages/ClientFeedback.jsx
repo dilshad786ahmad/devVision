@@ -26,6 +26,17 @@ export default function ClientFeedback() {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  // Sync form data with user session
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.username || user.name || prev.name,
+        email: user.email || prev.email,
+      }));
+    }
+  }, [user]);
+
   useEffect(() => {
     fetchFeedbacks();
   }, []);
@@ -252,13 +263,13 @@ export default function ClientFeedback() {
                   <div>
                     <label className="block text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-2">Name</label>
                     <input type="text" name="name" value={formData.name} readOnly
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 cursor-not-allowed focus:outline-none transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 cursor-not-allowed focus:outline-none transition-colors opacity-70"
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-2">Email</label>
                     <input type="email" name="email" value={formData.email} readOnly
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 cursor-not-allowed focus:outline-none transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 cursor-not-allowed focus:outline-none transition-colors opacity-70"
                     />
                   </div>
                 </div>

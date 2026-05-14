@@ -8,9 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { SkeletonBase, TextSkeleton } from "../components/Skeleton";
+import { useTheme } from "../context/ThemeContext";
 import { API_BASE_URL } from "../apiConfig";
 
 export default function About() {
+  const { isDarkMode } = useTheme();
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [index, setIndex] = useState(0); 
@@ -69,7 +71,7 @@ export default function About() {
   };
 
   return (
-  <div className="bg-[#050505] min-h-screen text-white relative overflow-hidden font-sans">
+  <div className={`${isDarkMode ? 'bg-[#050505] text-white' : 'bg-[#f8fafc] text-[#050505]'} min-h-screen relative overflow-hidden font-sans transition-colors duration-500`}>
     {/* Background ambient glows */}
     <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[150px] -z-10 mix-blend-screen pointer-events-none"></div>
     <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[150px] -z-10 mix-blend-screen pointer-events-none"></div>
@@ -99,7 +101,7 @@ export default function About() {
                 <SkeletonBase className="h-12 md:h-16 rounded-2xl w-3/4" />
             </div>
           ) : (
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-8 tracking-tighter leading-[1.1]">
+            <h2 className={`text-2xl md:text-3xl lg:text-4xl font-black ${isDarkMode ? 'text-white' : 'text-[#050505]'} mb-8 tracking-tighter leading-[1.1]`}>
                 {hero.heading}
             </h2>
           )}
@@ -108,10 +110,10 @@ export default function About() {
             <TextSkeleton lines={3} className="mb-12" />
           ) : (
             <>
-                <p className="text-gray-400 text-base md:text-lg lg:text-xl font-light leading-relaxed mb-8 max-w-xl">
+                <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'} text-base md:text-lg lg:text-xl font-light leading-relaxed mb-8 max-w-xl`}>
                     {hero.subheading}
                 </p>
-                <p className="text-gray-500 text-base leading-relaxed mb-12 max-w-lg">
+                <p className={`${isDarkMode ? 'text-gray-500' : 'text-gray-700'} text-base leading-relaxed mb-12 max-w-lg`}>
                     {hero.description}
                 </p>
             </>
@@ -137,7 +139,7 @@ export default function About() {
 
                 <button 
                   onClick={handleConnect}
-                  className="group px-6 md:px-7 lg:px-8 py-3.5 md:py-3.5 lg:py-4 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-white/10 transition-all duration-300 flex items-center gap-2 backdrop-blur-md hover:border-white/20"
+                  className={`group px-6 md:px-7 lg:px-8 py-3.5 md:py-3.5 lg:py-4 rounded-2xl ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-black/5 border-black/10 text-black'} font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-white/10 transition-all duration-300 flex items-center gap-2 backdrop-blur-md hover:border-white/20`}
                 >
                   Connect With Me <MessageCircle className="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" />
                 </button>
@@ -156,9 +158,9 @@ export default function About() {
         >
           <div className="absolute -inset-4 bg-gradient-to-tr from-orange-500/20 via-blue-500/10 to-transparent rounded-[3rem] blur-2xl opacity-50"></div>
           
-          <div className="relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] rounded-[3rem] overflow-hidden group border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-[#0a0a0a] transform transition-transform duration-700 hover:scale-[1.02]">
+          <div className={`relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] rounded-[3rem] overflow-hidden group border ${isDarkMode ? 'border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-[#0a0a0a]' : 'border-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.1)] bg-white'} transform transition-transform duration-700 hover:scale-[1.02]`}>
             {loading ? (
-                <div className="w-full h-full bg-white/5 animate-pulse"></div>
+                <div className={`${isDarkMode ? 'bg-white/5' : 'bg-black/5'} w-full h-full animate-pulse`}></div>
             ) : (
                 <>
                 <AnimatePresence mode="wait">
@@ -166,6 +168,7 @@ export default function About() {
                     key={index}
                     src={`${images[index]}?auto=format&fit=crop&q=80&w=800&fm=webp`}
                     loading="lazy"
+                    decoding="async"
                     width="600"
                     height="600"
                     initial={{ opacity: 0, scale: 1.1 }}
@@ -199,14 +202,14 @@ export default function About() {
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
-                className="absolute -bottom-10 -left-10 bg-[#0d0d0d]/90 backdrop-blur-2xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] px-8 py-6 rounded-3xl flex items-center gap-6 group hover:border-orange-500/30 transition-all duration-500 hidden md:flex"
+                className={`absolute -bottom-10 -left-10 ${isDarkMode ? 'bg-[#0d0d0d]/90 border-white/10' : 'bg-white/90 border-black/10'} backdrop-blur-2xl border shadow-[0_20px_40px_rgba(0,0,0,0.4)] px-8 py-6 rounded-3xl flex items-center gap-6 group hover:border-orange-500/30 transition-all duration-500 hidden md:flex`}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-[0_10px_20px_rgba(249,115,22,0.3)]">
                   <span className="text-white text-3xl font-black italic">{hero.experienceYears}</span>
                 </div>
                 <div>
                   <p className="text-[10px] font-black tracking-[0.2em] text-gray-500 uppercase mb-1">Expertise</p>
-                  <h4 className="font-black text-white text-xl tracking-tight">Years Active</h4>
+                  <h4 className={`font-black ${isDarkMode ? 'text-white' : 'text-[#050505]'} text-xl tracking-tight`}>Years Active</h4>
                 </div>
               </motion.div>
           )}
@@ -217,7 +220,7 @@ export default function About() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-5 mt-24">
         {loading ? (
             [1,2,3,4].map(i => (
-                <SkeletonBase key={i} className="h-40 bg-white/5 rounded-[2.5rem]" />
+                <SkeletonBase key={i} className={`h-40 ${isDarkMode ? 'bg-white/5' : 'bg-black/5'} rounded-[2.5rem]`} />
             ))
         ) : stats.map((item, i) => (
           <motion.div
@@ -226,7 +229,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1, duration: 0.5 }}
             viewport={{ once: true }}
-            className="group bg-white/[0.02] border border-white/10 p-5 rounded-[2.5rem] text-center backdrop-blur-md hover:bg-white/[0.04] hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] relative overflow-hidden"
+            className={`group ${isDarkMode ? 'bg-white/[0.02] border-white/10 hover:bg-white/[0.04]' : 'bg-black/[0.02] border-black/10 hover:bg-black/[0.04]'} border p-5 rounded-[2.5rem] text-center backdrop-blur-md hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] relative overflow-hidden`}
           >
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-orange-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <h3 className={`text-2xl md:text-3xl font-black ${item.color} mb-3 tracking-tighter`}>
@@ -240,7 +243,7 @@ export default function About() {
       </div>
     </section>
     
-    <div className="relative z-10 border-t border-white/5 bg-[#080808]/50">
+    <div className={`relative z-10 border-t ${isDarkMode ? 'border-white/5 bg-[#080808]/50' : 'border-black/5 bg-white/50'}`}>
       <Team/>
     </div>
 
@@ -259,7 +262,7 @@ export default function About() {
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="relative bg-[#0d0d0d] border border-white/10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-10 w-full max-w-sm overflow-hidden text-center"
+            className={`relative ${isDarkMode ? 'bg-[#0d0d0d] border-white/10 text-white' : 'bg-white border-black/10 text-[#050505]'} border rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-10 w-full max-w-sm overflow-hidden text-center`}
           >
             <button 
               onClick={() => setShowAuthModal(false)}

@@ -7,6 +7,17 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
   const [isVisible, setIsVisible] = useState(false);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Watch for mobile menu state change
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsMenuOpen(document.body.getAttribute('data-menu-open') === 'true');
+    });
+    observer.observe(document.body, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
+
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,7 +46,7 @@ const ScrollToTop = () => {
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isVisible && !isMenuOpen && (
         <motion.button
           initial={{ opacity: 0, y: 30, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -43,7 +54,7 @@ const ScrollToTop = () => {
           whileHover={{ scale: 1.1, y: -5 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-[100] w-14 h-14 bg-orange-500 text-white rounded-2xl shadow-[0_10px_30px_rgba(249,115,22,0.5)] flex items-center justify-center border border-white/20 backdrop-blur-md transition-colors hover:bg-orange-400 group"
+          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40 w-12 h-12 md:w-14 md:h-14 bg-orange-500 text-white rounded-2xl shadow-[0_10px_30px_rgba(249,115,22,0.5)] flex items-center justify-center border border-white/20 backdrop-blur-md transition-colors hover:bg-orange-400 group"
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-7 h-7 group-hover:animate-bounce" strokeWidth={3} />

@@ -6,6 +6,7 @@ import Team from "./our_team"
 import WhatIOffer from './Offer'
 import SpecializedSolutions from './Contact'
 import LazySection from '../components/LazySection'
+import WhyWebsite from '../components/WhyWebsite'
 
 const Container = () => {
   return (
@@ -14,6 +15,9 @@ const Container = () => {
    {/* <ExcellenceSection/> */}
    <LazySection minHeight="80vh">
      <About/>
+   </LazySection>
+   <LazySection minHeight="60vh">
+     <WhyWebsite/>
    </LazySection>
    {/* <Team/> */}
    <LazySection minHeight="80vh">

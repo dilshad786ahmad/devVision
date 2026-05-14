@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { API_BASE_URL } from "../apiConfig";
 import { Shield, FileText, Lock, ChevronLeft, Clock } from "lucide-react";
+import { SkeletonBase, TextSkeleton } from "../components/Skeleton";
 
 export default function LegalPage() {
   const { slug } = useParams();
@@ -33,8 +34,20 @@ export default function LegalPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#050505] pt-32 pb-24 px-6">
+        <div className="max-w-4xl mx-auto space-y-12">
+          <SkeletonBase className="h-12 w-12 rounded-xl mb-6" />
+          <SkeletonBase className="h-12 md:h-16 w-3/4 rounded-2xl" />
+          <div className="flex gap-4">
+             <SkeletonBase className="h-4 w-32 rounded" />
+             <SkeletonBase className="h-4 w-32 rounded" />
+          </div>
+          <div className="space-y-8 pt-10">
+            <TextSkeleton lines={6} />
+            <TextSkeleton lines={4} />
+            <TextSkeleton lines={8} />
+          </div>
+        </div>
       </div>
     );
   }

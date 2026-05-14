@@ -206,8 +206,36 @@ export default function Home() {
               View Projects <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               
-              <Link to="/Prices" className="bg-white/5 border border-white/10 text-white px-5 md:px-7 lg:px-10 py-4 md:py-3.5 lg:py-4.5 rounded-2xl font-black text-[10px] lg:text-xs uppercase tracking-widest transition-all duration-300 hover:bg-white/10 backdrop-blur-md active:scale-95 flex-1 md:flex-none justify-center whitespace-nowrap">
-                affordable Pricing 
+              <Link to="/Prices" className="flex-1 md:flex-none">
+                <motion.div
+                  animate={{ 
+                    borderColor: ["rgba(255,255,255,0.1)", "rgba(249,115,22,0.8)", "rgba(255,255,255,0.1)"],
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    boxShadow: [
+                      "0 0 0px rgba(249,115,22,0)", 
+                      "0 0 25px rgba(249,115,22,0.3)", 
+                      "0 0 0px rgba(249,115,22,0)"
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "linear",
+                    backgroundPosition: { duration: 5, repeat: Infinity, ease: "linear" }
+                  }}
+                  style={{
+                    backgroundSize: "200% 200%",
+                    backgroundImage: "linear-gradient(115deg, rgba(255,255,255,0.05) 0%, rgba(249,115,22,0.15) 50%, rgba(255,255,255,0.05) 100%)"
+                  }}
+                  className="border border-white/10 text-white px-5 md:px-7 lg:px-10 py-4 md:py-3.5 lg:py-4.5 rounded-2xl font-black text-[10px] lg:text-xs uppercase tracking-widest transition-all duration-300 hover:bg-white/10 backdrop-blur-md active:scale-95 flex justify-center items-center whitespace-nowrap h-full overflow-hidden relative group"
+                >
+                  <motion.div 
+                    animate={{ x: ["-100%", "200%"] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg]"
+                  />
+                  <span className="relative z-10">affordable Pricing</span>
+                </motion.div>
               </Link>
             </div>
           </motion.div>

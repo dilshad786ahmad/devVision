@@ -26,6 +26,7 @@ exports.updateHeroSection = async (req, res) => {
         const content = await AboutPageContent.findOneAndUpdate({}, { hero: req.body }, { new: true, upsert: true });
         res.status(200).json({ success: true, data: content });
     } catch (error) {
+        console.error("Update hero error:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -83,6 +84,7 @@ exports.uploadResume = async (req, res) => {
             resumeLink: fileUrl 
         });
     } catch (error) {
+        console.error("Resume upload error:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -102,6 +104,7 @@ exports.uploadImage = async (req, res) => {
             url: fileUrl 
         });
     } catch (error) {
+        console.error("Image upload error:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 };

@@ -6,10 +6,12 @@ import toast from "react-hot-toast";
 import { CheckCircle2, Calendar, User, Briefcase, ExternalLink, MessageCircle, Star, ArrowRight, Sparkles, Layout, Filter } from "lucide-react";
 import Breadcrumb from "./Breadcrumb";
 import { API_BASE_URL } from "../apiConfig";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState("");
@@ -17,6 +19,16 @@ export default function ProjectDetails() {
   // Review Form State
   const [reviewForm, setReviewForm] = useState({ rating: 5, text: "", user: "" });
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+
+  // Sync form data with user session
+  useEffect(() => {
+    if (user) {
+      setReviewForm(prev => ({
+        ...prev,
+        user: user.username || user.name || prev.user
+      }));
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -45,7 +57,7 @@ export default function ProjectDetails() {
             ...reviewForm
         });
         setDetails(res.data.data);
-        setReviewForm({ rating: 5, text: "", user: "" });
+        setReviewForm({ rating: 5, text: "", user: user?.username || user?.name || "" });
         toast.success("Review submitted! Thank you.");
     } catch (error) {
         toast.error("Failed to submit review");
@@ -117,6 +129,8 @@ export default function ProjectDetails() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.5 }}
                             src={activeImage || null}
+                            fetchPriority="high"
+                            decoding="async"
                             className="w-full h-full object-cover"
                             alt="Active View"
                           />
@@ -133,7 +147,7 @@ export default function ProjectDetails() {
                           onClick={() => setActiveImage(img)}
                           className={`w-24 h-16 md:w-32 md:h-20 shrink-0 rounded-xl md:rounded-2xl overflow-hidden border cursor-pointer shadow-xl relative group transition-all ${activeImage === img ? 'border-orange-500 ring-2 ring-orange-500/20' : 'border-white/10'}`}
                         >
-                          <img src={img || null} className="w-full h-full object-cover" alt={`Gallery ${i}`} />
+                          <img src={img || null} loading="lazy" decoding="async" className="w-full h-full object-cover" alt={`Gallery ${i}`} />
                         </motion.div>
                       ))}
                     </div>
@@ -293,7 +307,7 @@ export default function ProjectDetails() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                           <div className="space-y-2">
                               <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Your Name</label>
-                              <input required value={reviewForm.user} onChange={e => setReviewForm({...reviewForm, user: e.target.value})} placeholder="Enter name..." className="w-full bg-black/40 border border-white/10 p-4 rounded-2xl text-sm outline-none focus:border-orange-500/50 transition-all text-white" />
+                              <input required value={reviewForm.user} readOnly={!!user} onChange={e => setReviewForm({...reviewForm, user: e.target.value})} placeholder="Enter name..." className={`w-full bg-black/40 border border-white/10 p-4 rounded-2xl text-sm outline-none transition-all text-white ${user ? 'cursor-not-allowed text-gray-400 opacity-70' : 'focus:border-orange-500/50'}`} />
                           </div>
                           <div className="space-y-2">
                               <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Rating</label>

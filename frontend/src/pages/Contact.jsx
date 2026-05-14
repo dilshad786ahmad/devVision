@@ -36,6 +36,19 @@ export default function SpecializedSolutions() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // Auto-fill user details if logged in
+  useEffect(() => {
+    if (user) {
+      const nameParts = (user.username || user.name || "").trim().split(/\s+/);
+      setFormData(prev => ({
+        ...prev,
+        firstName: nameParts[0] || prev.firstName,
+        lastName: nameParts.slice(1).join(" ") || prev.lastName,
+        email: user.email || prev.email,
+      }));
+    }
+  }, [user]);
+
   useEffect(() => {
     let interval;
     if (cooldownUntil) {
@@ -230,8 +243,9 @@ export default function SpecializedSolutions() {
                     value={formData.firstName}
                     onChange={handleChange}
                     required
+                    readOnly={!!user}
                     placeholder="Jane"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all"
+                    className={`w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all ${user ? 'cursor-not-allowed opacity-70' : ''}`}
                   />
                 </div>
                 <div>
@@ -244,8 +258,9 @@ export default function SpecializedSolutions() {
                     value={formData.lastName}
                     onChange={handleChange}
                     required
+                    readOnly={!!user}
                     placeholder="Doe"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all"
+                    className={`w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all ${user ? 'cursor-not-allowed opacity-70' : ''}`}
                   />
                 </div>
               </div>
@@ -261,8 +276,9 @@ export default function SpecializedSolutions() {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  readOnly={!!user}
                   placeholder="jane@example.com"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all"
+                  className={`w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all ${user ? 'cursor-not-allowed opacity-70' : ''}`}
                 />
               </div>
 

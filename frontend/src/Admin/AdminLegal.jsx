@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../apiConfig";
 import { Shield, FileText, Lock, Edit3, Save, AlertCircle, CheckCircle, ChevronLeft } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { AdminGridSkeleton, AdminFormSkeleton, SkeletonBase } from "../components/Skeleton";
 
 export default function AdminLegal() {
   const [pages, setPages] = useState([]);
@@ -65,10 +66,16 @@ export default function AdminLegal() {
     }
   };
 
-  if (loading && pages.length === 0) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#050505] p-6 lg:p-10">
+         <div className="max-w-6xl mx-auto space-y-10">
+            <div className="space-y-4">
+                <SkeletonBase className="h-10 w-64 rounded-xl" />
+                <SkeletonBase className="h-4 w-96 rounded-md" />
+            </div>
+            {selectedPage ? <AdminFormSkeleton /> : <AdminGridSkeleton count={3} />}
+         </div>
       </div>
     );
   }

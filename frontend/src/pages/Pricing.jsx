@@ -108,9 +108,9 @@ export default function PricingPage() {
 
                       <h3 className="text-sm font-semibold text-gray-400 tracking-widest uppercase mb-2">{plan.title}</h3>
 
-                      <div className="flex items-end gap-1 mb-4">
-                        <p className="text-3xl sm:text-5xl font-bold text-white">{plan.price}</p>
-                        <span className="text-sm font-medium text-gray-500 mb-1">{plan.suffix}</span>
+                      <div className="flex items-baseline gap-1.5 mb-4 flex-wrap">
+                        <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{plan.price}</p>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{plan.suffix}</span>
                       </div>
 
                       <p className="text-sm text-gray-400 leading-relaxed mb-8 flex-grow">
@@ -203,8 +203,9 @@ export default function PricingPage() {
                   <div className="p-8 flex-grow flex flex-col relative z-20 -mt-10">
                     <h3 className="text-xs font-bold text-orange-400 tracking-widest uppercase mb-2">{item.title}</h3>
                     
-                    <div className="mb-6">
-                      <p className="text-2xl sm:text-4xl font-bold text-white">{item.price}</p>
+                    <div className="mb-6 flex items-baseline gap-1.5 flex-wrap">
+                      <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{item.price}</p>
+                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">/project</span>
                     </div>
 
                     <div className="w-full h-px bg-white/10 mb-6"></div>
@@ -252,7 +253,7 @@ export default function PricingPage() {
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${sys.highlight ? "bg-white/20 text-white shadow-inner" : "bg-white/5 text-gray-400 border border-white/10"}`}>
                       <DynamicIcon name={sys.icon} className="w-6 h-6" />
                     </div>
-                    <p className="text-2xl sm:text-4xl font-bold">{sys.price}</p>
+                    <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{sys.price}</p>
                   </div>
 
                   <h3 className="font-bold text-xl mb-3 text-white">{sys.title}</h3>

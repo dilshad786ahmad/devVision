@@ -27,7 +27,7 @@ export default function ExcellenceSection() {
         {/* GRID */}
         <div className="grid md:grid-cols-3 gap-8">
 
-          {/* BIG CARD */}
+            {/* BIG CARD */}
           <motion.div
             whileHover={{ scale: 1.02 }}
             className="relative md:col-span-2 h-[500px] rounded-3xl overflow-hidden group border border-white/10"
@@ -35,7 +35,10 @@ export default function ExcellenceSection() {
             {/* BG IMAGE */}
             <img
               src="https://images.unsplash.com/photo-1555949963-aa79dcee981c"
+              loading="lazy"
+              decoding="async"
               className="absolute w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60 group-hover:opacity-80"
+              alt="Analytics Background"
             />
 
             {/* OVERLAY */}
@@ -68,7 +71,10 @@ export default function ExcellenceSection() {
             >
               <img
                 src="https://images.unsplash.com/photo-1518770660439-4636190af475"
+                loading="lazy"
+                decoding="async"
                 className="absolute w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-50 group-hover:opacity-70"
+                alt="Security Background"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent group-hover:opacity-80 transition duration-500"></div>
@@ -93,7 +99,10 @@ export default function ExcellenceSection() {
             >
               <img
                 src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+                loading="lazy"
+                decoding="async"
                 className="absolute w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-50 group-hover:opacity-70"
+                alt="Sync Background"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent group-hover:opacity-80 transition duration-500"></div>

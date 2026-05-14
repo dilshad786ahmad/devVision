@@ -116,9 +116,8 @@ exports.signup = async (req, res) => {
                 id: newUser._id,
                 username: newUser.username,
                 email: newUser.email,
-                mobileNumber: newUser.mobileNumber, // added
-                country: newUser.country,           // added
-                password: newUser.password          // added (lekin ek baat dhyan rakhna)
+                mobileNumber: newUser.mobileNumber,
+                country: newUser.country,
             },
         });
     } catch (error) {
@@ -268,9 +267,12 @@ exports.logout = async (req, res) => {
 // ================= GET ME (Identity Sync) =================
 exports.getMe = async (req, res) => {
     try {
-        const token = req.cookies.token;
+        // Check both cookies and Authorization header
+        const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+        
         if (!token) {
-            return res.status(401).json({ success: false, message: "No token provided" });
+            // Send 200 instead of 401 to avoid console errors when logged out
+            return res.status(200).json({ success: false, message: "No active session" });
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -282,6 +284,7 @@ exports.getMe = async (req, res) => {
 
         res.status(200).json({ success: true, user });
     } catch (error) {
+        // If token is invalid, we return 401 only if it was present but expired/wrong
         res.status(401).json({ success: false, message: "Invalid or expired token" });
     }
 };

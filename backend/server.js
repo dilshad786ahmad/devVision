@@ -21,6 +21,13 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
+// ✅ Fix Cross-Origin-Opener-Policy for Google Login
+app.use((req, res, next) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+    res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none"); // Optional but safer for some OAuth flows
+    next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); // Ye line routes se upar honi chahiye
@@ -68,7 +75,7 @@ app.use("/api/servicespage", servicesPageRoutes);
 
 // ✅Skills Page Content Routes
 const skillsPageRoutes = require('./routes/skillsPageRoutes');
-app.use("/api/skillspage", skillsPageRoutes);
+app.use("/api/skills", skillsPageRoutes);
 
 // ✅Projects Page Content Routes
 const projectsPageRoutes = require('./routes/projectsPageRoutes');
@@ -98,6 +105,10 @@ app.use("/api/feedback", clientFeedbackRoutes);
 // ✅ Legal & Privacy Routes
 const legalRoutes = require('./routes/legalRoutes');
 app.use("/api/legal", legalRoutes);
+
+// ✅ Why Website Important Routes
+const whyWebsiteRoutes = require('./routes/whyWebsiteRoutes');
+app.use("/api/why-website", whyWebsiteRoutes);
 
 
 

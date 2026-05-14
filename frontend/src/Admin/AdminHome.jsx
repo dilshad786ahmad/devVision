@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Layout, Edit, Save, Plus, Trash2, Image as ImageIcon, Box, Cloud, Lock, BarChart3, X, Sparkles,
-  Briefcase, Shield, Zap, Target, Rocket, Cpu, Code2, Globe, Heart, Smartphone 
+  Briefcase, Shield, Zap, Target, Rocket, Cpu, Code2, Globe, Heart, Smartphone, Upload, Link as LinkIcon,
+  RefreshCw
 } from "lucide-react";
 import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
 import { API_BASE_URL, resolveUrl } from "../apiConfig";
@@ -31,7 +32,13 @@ const AdminHome = () => {
 
   // Modals
   const [cardModal, setCardModal] = useState({ isOpen: false, isEdit: false, data: { title: "", description: "", icon: "Cloud" }, index: null });
-  const [imageModal, setImageModal] = useState({ isOpen: false, url: "", target: "carousel" }); // "carousel", "main", "cardStack"
+  const [imageModal, setImageModal] = useState({ 
+    isOpen: false, 
+    url: "", 
+    target: "carousel", 
+    mode: "url", // "url" or "upload"
+    uploading: false 
+  });
 
   const fetchData = async () => {
     setLoading(true);
@@ -126,7 +133,31 @@ const AdminHome = () => {
     } else {
       setHeroForm({ ...heroForm, images: [...heroForm.images, url] });
     }
-    setImageModal({ isOpen: false, url: "", target: "carousel" });
+    setImageModal({ isOpen: false, url: "", target: "carousel", mode: "url", uploading: false });
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImageModal({ ...imageModal, uploading: true });
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await axios.post(`${API_BASE_URL}/api/homepage/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true
+      });
+      if (res.data.success) {
+        handleAddImage(res.data.url);
+        toast.success("Image uploaded!");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Upload failed");
+    } finally {
+      setImageModal({ ...imageModal, uploading: false });
+    }
   };
 
   const removeCarouselImage = (index) => {
@@ -156,169 +187,231 @@ const AdminHome = () => {
     </div>
   );
 
+  const TabButton = ({ id, label, icon: Icon }) => (
+    <motion.button 
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={() => setActiveTab(id)} 
+      className={`relative flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === id ? "text-white" : "text-gray-400 hover:text-white"}`}
+    >
+      {activeTab === id && (
+        <motion.div layoutId="active-tab-bg" className="absolute inset-0 bg-orange-500 rounded-xl shadow-lg shadow-orange-500/20" />
+      )}
+      <Icon className="w-4 h-4 relative z-10" /> 
+      <span className="relative z-10">{label}</span>
+    </motion.button>
+  );
+
   return (
-    <div className="min-h-screen bg-[#050505] font-sans text-white relative overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[150px] -z-10"></div>
-      
-      <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
+    <div className="relative">
+      <div className="max-w-6xl">
+
         <header className="mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-4">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-4">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
             <span className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase">System Overview</span>
-          </div>
-          <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
+          </motion.div>
+          <motion.h1 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
             Landing Page Manager
-          </h1>
+          </motion.h1>
         </header>
 
         {/* TABS */}
         <div className="flex flex-wrap gap-2 mb-10 p-1.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl w-fit">
-          <button onClick={() => setActiveTab("hero")} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === "hero" ? "bg-orange-500 shadow-lg shadow-orange-500/20" : "text-gray-400 hover:text-white"}`}>
-            <Sparkles className="w-4 h-4" /> Hero Settings
-          </button>
-          <button onClick={() => setActiveTab("cards")} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === "cards" ? "bg-orange-500 shadow-lg shadow-orange-500/20" : "text-gray-400 hover:text-white"}`}>
-            <Box className="w-4 h-4" /> Feature Cards
-          </button>
-          <button onClick={() => setActiveTab("social")} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === "social" ? "bg-orange-500 shadow-lg shadow-orange-500/20" : "text-gray-400 hover:text-white"}`}>
-            <Cloud className="w-4 h-4" /> Social Assets
-          </button>
+          <TabButton id="hero" label="Hero Settings" icon={Sparkles} />
+          <TabButton id="cards" label="Feature Cards" icon={Box} />
+          <TabButton id="social" label="Social Assets" icon={Cloud} />
         </div>
 
-        {activeTab === "hero" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-10">
-            {/* HERO FORM */}
-            <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-xl relative overflow-hidden">
-               <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
-               <h2 className="text-xl font-bold mb-8 flex items-center gap-3">Hero Content</h2>
-               <form onSubmit={handleUpdateHero} className="space-y-8">
-                 <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Badge Text</label>
-                      <input type="text" value={heroForm.badgeText} onChange={e => setHeroForm({...heroForm, badgeText: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Main Heading</label>
-                      <input type="text" value={heroForm.heading} onChange={e => setHeroForm({...heroForm, heading: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50" />
-                    </div>
-                    <div className="md:col-span-2 space-y-2">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Sub-heading / Description</label>
-                      <textarea rows="3" value={heroForm.subheading} onChange={e => setHeroForm({...heroForm, subheading: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50"></textarea>
-                    </div>
-                 </div>
+        <AnimatePresence mode="wait">
+          {activeTab === "hero" && (
+            <motion.div 
+              key="hero"
+              initial={{ opacity: 0, x: 20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-10"
+            >
+              {/* HERO FORM */}
+              <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-xl relative overflow-hidden">
+                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
+                 <h2 className="text-xl font-bold mb-8 flex items-center gap-3">Hero Content</h2>
+                 <form onSubmit={handleUpdateHero} className="space-y-8">
+                   <div className="grid md:grid-cols-2 gap-8">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Badge Text</label>
+                        <input type="text" value={heroForm.badgeText} onChange={e => setHeroForm({...heroForm, badgeText: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50 transition-all" />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Main Heading</label>
+                        <input type="text" value={heroForm.heading} onChange={e => setHeroForm({...heroForm, heading: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50 transition-all" />
+                      </div>
+                      <div className="md:col-span-2 space-y-2">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Sub-heading / Description</label>
+                        <textarea rows="3" value={heroForm.subheading} onChange={e => setHeroForm({...heroForm, subheading: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"></textarea>
+                      </div>
+                   </div>
 
-                 {/* IMAGES */}
-                 <div className="space-y-6">
-                    <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest border-b border-white/5 pb-2">Visual Assets</h3>
-                    <div className="grid md:grid-cols-2 gap-8">
-                       {/* Carousel Images */}
-                       <div className="space-y-4">
-                          <div className="flex justify-between items-center">
-                             <label className="text-[10px] font-bold text-gray-500 uppercase">Background Carousel</label>
-                             <button type="button" onClick={() => setImageModal({ isOpen: true, url: "", target: "carousel" })} className="text-orange-500 hover:text-orange-400 transition-colors"><Plus size={20}/></button>
-                          </div>
-                          <div className="grid grid-cols-3 gap-2">
-                             {heroForm.images.map((img, i) => (
-                               <div key={i} className="relative aspect-video rounded-lg overflow-hidden border border-white/10 group">
-                                  <img src={resolveUrl(img)} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all" />
-                                  <button type="button" onClick={() => removeCarouselImage(i)} className="absolute top-1 right-1 p-1 bg-red-600 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={12}/></button>
-                               </div>
-                             ))}
-                          </div>
-                       </div>
-                       {/* Main Featured Image Stack */}
-                       <div className="space-y-4">
-                          <div className="flex justify-between items-center">
-                             <label className="text-[10px] font-bold text-gray-500 uppercase block">Featured Stack (Right Side)</label>
-                             <button type="button" onClick={() => setImageModal({ isOpen: true, url: "", target: "cardStack" })} className="text-orange-500 hover:text-orange-400 transition-colors"><Plus size={20}/></button>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                             {heroForm.cardImages?.map((img, i) => (
-                                <div key={i} className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 group">
-                                   <img src={resolveUrl(img)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all" />
-                                   <button type="button" onClick={() => removeCardImage(i)} className="absolute top-2 right-2 p-2 bg-red-600 rounded-xl opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
-                                   <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/60 rounded-md text-[8px] font-bold uppercase tracking-tighter text-white">Position {i+1}</div>
-                                </div>
-                             ))}
-                             {(!heroForm.cardImages || heroForm.cardImages.length === 0) && (
-                                <div className="aspect-square rounded-2xl border border-dashed border-white/10 flex flex-col items-center justify-center text-gray-600 gap-2">
-                                   <ImageIcon size={24} />
-                                   <span className="text-[9px] font-bold uppercase">No Images Stacked</span>
-                                </div>
-                             )}
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-
-                 <div className="flex justify-end pt-6 border-t border-white/5">
-                    <button type="submit" disabled={isUpdating} className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all shadow-xl shadow-orange-500/20 disabled:opacity-50">
-                      <Save size={18} /> {isUpdating ? "Syncing..." : "Update Landing Page"}
-                    </button>
-                 </div>
-               </form>
-            </div>
-          </motion.div>
-        )}
-
-        {activeTab === "cards" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="flex justify-between items-center bg-white/[0.02] border border-white/10 p-8 rounded-[2rem] backdrop-blur-xl">
-               <h2 className="text-xl font-bold flex items-center gap-3"><Box className="text-orange-500 w-5 h-5" /> Introduction Cards</h2>
-               <button onClick={() => setCardModal({ isOpen: true, isEdit: false, data: { title: "", description: "", icon: "Cloud" }, index: null })} className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-bold hover:bg-white/10 transition-all">
-                  <Plus size={16} className="text-orange-500" /> New Card
-               </button>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-               {cards.map((card, i) => (
-                 <div key={i} className="group bg-white/[0.02] border border-white/10 p-8 rounded-[2.5rem] relative overflow-hidden backdrop-blur-xl hover:bg-white/[0.04] transition-all">
-                    <div className="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6 text-orange-500 group-hover:scale-110 transition-transform">
-                       <DynamicIcon name={card.icon} className="w-7 h-7" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-3">{card.title}</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed">{card.description}</p>
-                    <div className="flex gap-2 mt-8 opacity-0 group-hover:opacity-100 transition-all">
-                       <button onClick={() => setCardModal({ isOpen: true, isEdit: true, data: card, index: i })} className="p-3 bg-white/5 rounded-xl text-blue-400 hover:bg-blue-400/10"><Edit size={16}/></button>
-                       <button onClick={() => handleDeleteCard(i)} className="p-3 bg-white/5 rounded-xl text-red-400 hover:bg-red-400/10"><Trash2 size={16}/></button>
-                    </div>
-                 </div>
-               ))}
-            </div>
-          </motion.div>
-        )}
-
-        {activeTab === "social" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-10">
-            <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-xl relative overflow-hidden">
-               <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
-               <h2 className="text-xl font-bold mb-8 flex items-center gap-3">Social Connectivity</h2>
-               <form onSubmit={handleUpdateSocial} className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-8">
-                     {Object.keys(socialLinks).map((platform) => (
-                       <div key={platform} className="space-y-2">
-                         <label className="text-[10px] font-bold text-gray-500 uppercase px-1">{platform} Profile URL</label>
-                         <div className="relative">
-                            <input 
-                              type="text" 
-                              value={socialLinks[platform]} 
-                              onChange={e => setSocialLinks({...socialLinks, [platform]: e.target.value})} 
-                              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50" 
-                              placeholder={`https://${platform}.com/...`}
-                            />
+                   {/* IMAGES */}
+                   <div className="space-y-6">
+                      <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest border-b border-white/5 pb-2">Visual Assets</h3>
+                      <div className="grid md:grid-cols-2 gap-8">
+                         {/* Carousel Images */}
+                         <div className="space-y-4">
+                            <div className="flex justify-between items-center">
+                               <label className="text-[10px] font-bold text-gray-500 uppercase">Background Carousel</label>
+                               <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} type="button" onClick={() => setImageModal({ isOpen: true, url: "", target: "carousel", mode: "url", uploading: false })} className="text-orange-500 hover:text-orange-400 transition-colors"><Plus size={20}/></motion.button>
+                            </div>
+                            <div className="grid grid-cols-3 gap-2">
+                               {heroForm.images.map((img, i) => (
+                                 <motion.div 
+                                    key={i} 
+                                    whileHover={{ scale: 1.05 }}
+                                    className="relative aspect-video rounded-lg overflow-hidden border border-white/10 group"
+                                  >
+                                    <img src={resolveUrl(img)} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all" />
+                                    <button type="button" onClick={() => removeCarouselImage(i)} className="absolute top-1 right-1 p-1 bg-red-600 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={12}/></button>
+                                 </motion.div>
+                               ))}
+                            </div>
                          </div>
-                       </div>
-                     ))}
-                  </div>
+                         {/* Main Featured Image Stack */}
+                         <div className="space-y-4">
+                            <div className="flex justify-between items-center">
+                               <label className="text-[10px] font-bold text-gray-500 uppercase block">Featured Stack (Right Side)</label>
+                               <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} type="button" onClick={() => setImageModal({ isOpen: true, url: "", target: "cardStack", mode: "url", uploading: false })} className="text-orange-500 hover:text-orange-400 transition-colors"><Plus size={20}/></motion.button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                               {heroForm.cardImages?.map((img, i) => (
+                                  <motion.div 
+                                    key={i} 
+                                    whileHover={{ scale: 1.02 }}
+                                    className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 group"
+                                  >
+                                     <img src={resolveUrl(img)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all" />
+                                     <button type="button" onClick={() => removeCardImage(i)} className="absolute top-2 right-2 p-2 bg-red-600 rounded-xl opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
+                                     <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/60 rounded-md text-[8px] font-bold uppercase tracking-tighter text-white">Position {i+1}</div>
+                                  </motion.div>
+                               ))}
+                               {(!heroForm.cardImages || heroForm.cardImages.length === 0) && (
+                                  <div className="aspect-square rounded-2xl border border-dashed border-white/10 flex flex-col items-center justify-center text-gray-600 gap-2">
+                                     <ImageIcon size={24} />
+                                     <span className="text-[9px] font-bold uppercase">No Images Stacked</span>
+                                  </div>
+                               )}
+                            </div>
+                         </div>
+                      </div>
+                   </div>
 
-                  <div className="flex justify-end pt-6 border-t border-white/5">
-                     <button type="submit" disabled={isUpdating} className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all shadow-xl shadow-orange-500/20 disabled:opacity-50">
-                       <Save size={18} /> {isUpdating ? "Syncing..." : "Update Social Infrastructure"}
-                     </button>
-                  </div>
-               </form>
-            </div>
-          </motion.div>
-        )}
+                   <div className="flex justify-end pt-6 border-t border-white/5">
+                      <motion.button 
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit" 
+                        disabled={isUpdating} 
+                        className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all shadow-xl shadow-orange-500/20 disabled:opacity-50"
+                      >
+                        {isUpdating ? <RefreshCw size={18} className="animate-spin" /> : <Save size={18} />}
+                        {isUpdating ? "Syncing..." : "Update Landing Page"}
+                      </motion.button>
+                   </div>
+                 </form>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "cards" && (
+            <motion.div 
+              key="cards"
+              initial={{ opacity: 0, x: 20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div className="flex justify-between items-center bg-white/[0.02] border border-white/10 p-8 rounded-[2rem] backdrop-blur-xl">
+                 <h2 className="text-xl font-bold flex items-center gap-3"><Box className="text-orange-500 w-5 h-5" /> Introduction Cards</h2>
+                 <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setCardModal({ isOpen: true, isEdit: false, data: { title: "", description: "", icon: "Cloud" }, index: null })} 
+                    className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-bold hover:bg-white/10 transition-all"
+                  >
+                    <Plus size={16} className="text-orange-500" /> New Card
+                 </motion.button>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                 {cards.map((card, i) => (
+                   <motion.div 
+                    key={i} 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    whileHover={{ y: -5 }}
+                    className="group bg-white/[0.02] border border-white/10 p-8 rounded-[2.5rem] relative overflow-hidden backdrop-blur-xl hover:bg-white/[0.04] transition-all"
+                   >
+                      <div className="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6 text-orange-500 group-hover:scale-110 transition-transform">
+                         <DynamicIcon name={card.icon} className="w-7 h-7" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-3">{card.title}</h3>
+                      <p className="text-gray-500 text-sm leading-relaxed">{card.description}</p>
+                      <div className="flex gap-2 mt-8 opacity-0 group-hover:opacity-100 transition-all">
+                         <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setCardModal({ isOpen: true, isEdit: true, data: card, index: i })} className="p-3 bg-white/5 rounded-xl text-blue-400 hover:bg-blue-400/10"><Edit size={16}/></motion.button>
+                         <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => handleDeleteCard(i)} className="p-3 bg-white/5 rounded-xl text-red-400 hover:bg-red-400/10"><Trash2 size={16}/></motion.button>
+                      </div>
+                   </motion.div>
+                 ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "social" && (
+            <motion.div 
+              key="social"
+              initial={{ opacity: 0, x: 20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-10"
+            >
+              <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-xl relative overflow-hidden">
+                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
+                 <h2 className="text-xl font-bold mb-8 flex items-center gap-3">Social Connectivity</h2>
+                 <form onSubmit={handleUpdateSocial} className="space-y-8">
+                    <div className="grid md:grid-cols-2 gap-8">
+                       {Object.keys(socialLinks).map((platform) => (
+                         <div key={platform} className="space-y-2">
+                           <label className="text-[10px] font-bold text-gray-500 uppercase px-1">{platform} Profile URL</label>
+                           <div className="relative">
+                              <input 
+                                type="text" 
+                                value={socialLinks[platform]} 
+                                onChange={e => setSocialLinks({...socialLinks, [platform]: e.target.value})} 
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50 transition-all" 
+                                placeholder={`https://${platform}.com/...`}
+                              />
+                           </div>
+                         </div>
+                       ))}
+                    </div>
+
+                    <div className="flex justify-end pt-6 border-t border-white/5">
+                       <motion.button 
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          type="submit" 
+                          disabled={isUpdating} 
+                          className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all shadow-xl shadow-orange-500/20 disabled:opacity-50"
+                        >
+                         {isUpdating ? <RefreshCw size={18} className="animate-spin" /> : <Save size={18} />}
+                         {isUpdating ? "Syncing..." : "Update Social Infrastructure"}
+                       </motion.button>
+                    </div>
+                 </form>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* MODALS */}
@@ -346,18 +439,64 @@ const AdminHome = () => {
                         <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Description</label>
                         <textarea required rows="3" value={cardModal.data.description} onChange={e => setCardModal({...cardModal, data: {...cardModal.data, description: e.target.value}})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none"></textarea>
                      </div>
-                     <button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest transition-all">Finalize Card</button>
+                     <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest transition-all">Finalize Card</motion.button>
                   </form>
                 )}
 
                 {imageModal.isOpen && (
-                   <div className="space-y-6">
-                      <h3 className="text-2xl font-black">Asset Integration</h3>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Asset URL</label>
-                        <input required type="text" value={imageModal.url} onChange={e => setImageModal({...imageModal, url: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none" placeholder="https://..." />
+                   <div className="space-y-8">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-2xl font-black">Asset Manager</h3>
+                        <motion.button whileHover={{ rotate: 90 }} whileTap={{ scale: 0.9 }} onClick={() => setImageModal({...imageModal, isOpen: false})} className="p-2 bg-white/5 rounded-xl text-gray-500 hover:text-white"><X size={20}/></motion.button>
                       </div>
-                      <button onClick={() => handleAddImage(imageModal.url)} className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest transition-all">Apply Asset</button>
+
+                      {/* Mode Toggle */}
+                      <div className="flex p-1 bg-white/5 border border-white/10 rounded-2xl">
+                        <button onClick={() => setImageModal({...imageModal, mode: "url"})} className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all relative ${imageModal.mode === "url" ? "text-white" : "text-gray-500 hover:text-white"}`}>
+                          {imageModal.mode === "url" && <motion.div layoutId="mode-bg" className="absolute inset-0 bg-orange-500 rounded-xl shadow-lg" />}
+                          <LinkIcon size={14} className="relative z-10" /> <span className="relative z-10">URL Mode</span>
+                        </button>
+                        <button onClick={() => setImageModal({...imageModal, mode: "upload"})} className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all relative ${imageModal.mode === "upload" ? "text-white" : "text-gray-500 hover:text-white"}`}>
+                          {imageModal.mode === "upload" && <motion.div layoutId="mode-bg" className="absolute inset-0 bg-orange-500 rounded-xl shadow-lg" />}
+                          <Upload size={14} className="relative z-10" /> <span className="relative z-10">Upload Mode</span>
+                        </button>
+                      </div>
+
+                      <div className="space-y-6">
+                        {imageModal.mode === "url" ? (
+                          <div className="space-y-4">
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-bold text-gray-500 uppercase px-1 tracking-widest">Asset URL</label>
+                              <input required type="text" value={imageModal.url} onChange={e => setImageModal({...imageModal, url: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-orange-500/50 transition-all" placeholder="https://images.unsplash.com/..." />
+                            </div>
+                            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => handleAddImage(imageModal.url)} className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-xl shadow-orange-500/20">Apply External URL</motion.button>
+                          </div>
+                        ) : (
+                          <div className="space-y-4">
+                            <label className="group relative block aspect-video border-2 border-dashed border-white/10 rounded-3xl overflow-hidden cursor-pointer hover:border-orange-500/50 transition-all">
+                              <input type="file" onChange={handleFileUpload} className="hidden" accept="image/*" disabled={imageModal.uploading} />
+                              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-gray-500 group-hover:text-orange-500">
+                                {imageModal.uploading ? (
+                                  <>
+                                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full"></motion.div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest">Transferring Data...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <motion.div whileHover={{ scale: 1.1, rotate: 5 }} className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition-all">
+                                      <Upload size={24} />
+                                    </motion.div>
+                                    <div className="text-center">
+                                      <span className="block text-[10px] font-black uppercase tracking-widest">Click to Upload</span>
+                                      <span className="text-[9px] opacity-50">JPG, PNG or WEBP (Max 10MB)</span>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </label>
+                          </div>
+                        )}
+                      </div>
                    </div>
                 )}
              </motion.div>

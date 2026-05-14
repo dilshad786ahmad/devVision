@@ -45,15 +45,18 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Use Cloudinary if credentials are provided, else use Disk Storage
-const storage = (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) 
-    ? cloudinaryStorage 
-    : diskStorage;
+const isCloudinaryConfigured = 
+    process.env.CLOUDINARY_CLOUD_NAME && 
+    process.env.CLOUDINARY_CLOUD_NAME !== 'your_cloud_name' &&
+    process.env.CLOUDINARY_API_KEY && 
+    process.env.CLOUDINARY_API_KEY !== 'your_api_key';
+
+const storage = isCloudinaryConfigured ? cloudinaryStorage : diskStorage;
 
 const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
 module.exports = upload;
