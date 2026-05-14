@@ -16,7 +16,7 @@ export default function ExcellenceSection() {
               Innovation
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-6 tracking-tight">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-6 tracking-tight">
             Engineered for Excellence
           </h2>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">

@@ -99,7 +99,7 @@ export default function About() {
                 <SkeletonBase className="h-12 md:h-16 rounded-2xl w-3/4" />
             </div>
           ) : (
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-8 tracking-tighter leading-[1.1]">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-8 tracking-tighter leading-[1.1]">
                 {hero.heading}
             </h2>
           )}
@@ -214,7 +214,7 @@ export default function About() {
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-24">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-5 mt-24">
         {loading ? (
             [1,2,3,4].map(i => (
                 <SkeletonBase key={i} className="h-40 bg-white/5 rounded-[2.5rem]" />
@@ -226,10 +226,10 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1, duration: 0.5 }}
             viewport={{ once: true }}
-            className="group bg-white/[0.02] border border-white/10 p-10 rounded-[2.5rem] text-center backdrop-blur-md hover:bg-white/[0.04] hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] relative overflow-hidden"
+            className="group bg-white/[0.02] border border-white/10 p-5 rounded-[2.5rem] text-center backdrop-blur-md hover:bg-white/[0.04] hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] relative overflow-hidden"
           >
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-orange-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <h3 className={`text-4xl md:text-5xl font-black ${item.color} mb-3 tracking-tighter`}>
+            <h3 className={`text-2xl md:text-3xl font-black ${item.color} mb-3 tracking-tighter`}>
               {item.num}
             </h3>
             <p className="text-gray-500 text-[10px] font-black tracking-[0.2em] uppercase">

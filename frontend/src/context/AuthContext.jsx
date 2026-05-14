@@ -23,6 +23,20 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Add a request interceptor to include the token in the header
+    const interceptor = axios.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
     const checkAuth = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/api/auth/me`, {
@@ -39,10 +53,15 @@ export const AuthProvider = ({ children }) => {
         if (err.response?.status === 401) {
           setUser(null);
           localStorage.removeItem("user");
+          localStorage.removeItem("token");
         }
       }
     };
     checkAuth();
+
+    return () => {
+      axios.interceptors.request.eject(interceptor);
+    };
   }, []);
 
   // --- LOGOUT FUNCTION WITH REDIRECT ---

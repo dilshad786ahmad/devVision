@@ -86,7 +86,7 @@ export default function FeaturedProjects() {
           viewport={{ once: true }}
           className="mb-8"
         >
-          <h1 className="text-5xl md:text-6xl font-black text-white mb-4 tracking-tighter">
+          <h1 className="text-3xl md:text-4xl font-black text-white mb-4 tracking-tighter">
             {header.title}
           </h1>
           <p className="text-gray-400 text-lg max-w-3xl leading-relaxed font-light">

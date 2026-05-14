@@ -146,15 +146,15 @@ export default function Home() {
                 <SkeletonBase className="h-[40px] md:h-[48px] lg:h-[60px] rounded-2xl w-1/2" />
               </div>
             ) : (
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-8 tracking-tight leading-[1.1]">
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-6 tracking-tight leading-[1.1]">
                 <StaticText text={hero.heading} />
               </h1>
             )}
 
             {loading ? (
-              <SkeletonBase className="h-20 rounded-2xl w-full mb-12" />
+              <SkeletonBase className="h-20 rounded-2xl w-full mb-10" />
             ) : (
-              <p className="text-gray-400 text-base md:text-lg lg:text-xl max-w-xl leading-relaxed font-light mb-12">
+              <p className="text-gray-400 text-sm md:text-base lg:text-lg max-w-xl leading-relaxed font-light mb-10">
                 {hero.subheading}
               </p>
             )}
@@ -213,7 +213,7 @@ export default function Home() {
           </motion.div>
 
           {/* RIGHT IMAGE STACK - ANIMATED */}
-          <div className="flex justify-center items-center relative h-[300px] md:h-[500px] lg:h-[600px] w-full [perspective:2000px] mt-10 md:mt-0">
+          <div className="flex justify-center items-center relative h-[300px] md:h-[500px] lg:h-[500px] w-full [perspective:2000px] mt-10 md:mt-0">
             <div className="relative w-full max-w-[260px] md:max-w-[380px] lg:max-w-[450px] aspect-[4/5] md:aspect-auto md:h-full">
                 
                 {loading ? (
@@ -298,7 +298,7 @@ export default function Home() {
       </section>
 
       {/* CARDS SECTION */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 py-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="relative z-10 max-w-7xl mx-auto px-6 py-5 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
             [1,2,3].map(i => (
                 <div key={i} className="h-[400px]"><CardSkeleton /></div>
@@ -324,9 +324,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="group bg-white/[0.02] p-5 rounded-[2.5rem] border border-white/10 backdrop-blur-xl hover:bg-white/[0.04] transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_50px_-10px_rgba(249,115,22,0.2)] flex flex-col"
           >
-            <div className="w-16 h-16 flex items-center justify-center bg-white/5 border border-white/10 rounded-2xl mb-8 group-hover:scale-110 group-hover:bg-orange-500/10 group-hover:border-orange-500/20 transition-all duration-500">
+            <div className="w-16 h-10 flex items-center justify-center bg-white/5 border border-white/10 rounded-2xl mb-8 group-hover:scale-110 group-hover:bg-orange-500/10 group-hover:border-orange-500/20 transition-all duration-500">
               <div className="text-orange-500">
-                <DynamicIcon name={card.icon} className="w-8 h-8" />
+                <DynamicIcon name={card.icon} className="w-7 h-7" />
               </div>
             </div>
             <h3 className="font-bold text-2xl text-white mb-4 tracking-tight group-hover:text-orange-400 transition-colors">{card.title}</h3>

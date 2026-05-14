@@ -65,7 +65,7 @@ export default function WhatIOffer() {
           viewport={{ once: true }}
           className="mb-12 text-center flex flex-col items-center"
         >
-          <div className="inline-flex items-center gap-2 mt-10 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 mt-1 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
             <span className="text-[10px] font-bold tracking-[0.2em] text-gray-300 uppercase">
               {loading ? "Syncing Solutions..." : header.badgeText}
@@ -75,7 +75,7 @@ export default function WhatIOffer() {
           {loading ? (
             <SkeletonBase className="h-12 md:h-16 w-3/4 rounded-2xl mb-6" />
           ) : (
-            <h1 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-6 tracking-tight leading-[1.1]">
+            <h1 className="text-4xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-6 tracking-tight leading-[1.1]">
                 {header.heading}
             </h1>
           )}
@@ -90,7 +90,7 @@ export default function WhatIOffer() {
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3  gap-8">
           {loading ? (
               [1,2,3].map(i => (
                   <div key={i} className="h-[400px]"><CardSkeleton /></div>
@@ -120,7 +120,7 @@ export default function WhatIOffer() {
               
               {/* Icon */}
               <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                <DynamicIcon name={service.icon} className={`w-8 h-8 ${service.iconColor || 'text-orange-400'}`} />
+                <DynamicIcon name={service.icon} className={`w-7 h-7 ${service.iconColor || 'text-orange-400'}`} />
               </div>
 
               {/* Title */}

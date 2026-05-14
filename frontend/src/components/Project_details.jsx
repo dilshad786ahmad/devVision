@@ -91,7 +91,7 @@ export default function ProjectDetails() {
                       <Sparkles className="w-3.5 h-3.5 m text-orange-500 animate-pulse" />
                       <span className="text-[10px] font-black tracking-[0.3em] text-gray-300 uppercase">{details.caseStudyBadge}</span>
                     </div>
-                    <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter leading-[1.1]">{details.title}</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-6 tracking-tighter leading-[1.1]">{details.title}</h1>
                     <div className="flex items-center gap-3 mb-8">
                        <div className="h-[1px] w-12 bg-orange-500"></div>
                        <button 
@@ -236,8 +236,8 @@ export default function ProjectDetails() {
                     </div>
 
                     <div className="flex flex-wrap gap-2 mb-10">
-                      {details.techStack?.map(tag => (
-                        <span key={tag} className="text-[8px] md:text-[9px] font-black uppercase tracking-widest px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-gray-400">{tag}</span>
+                      {details.techStack?.map((tag, i) => (
+                        <span key={`${tag}-${i}`} className="text-[8px] md:text-[9px] font-black uppercase tracking-widest px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-gray-400">{tag}</span>
                       ))}
                     </div>
 

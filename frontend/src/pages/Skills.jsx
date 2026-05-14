@@ -83,7 +83,7 @@ export default function SkillsSection() {
           {loading ? (
             <div className="h-12 md:h-16 w-3/4 bg-white/5 rounded-2xl animate-pulse mb-6"></div>
           ) : (
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-6 tracking-tighter leading-[1.1]">
+            <h2 className="text-3xl md:text-5xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 mb-6 tracking-tighter leading-[1.1]">
                 {header.title}
             </h2>
           )}

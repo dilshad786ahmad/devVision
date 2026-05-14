@@ -81,7 +81,7 @@ const Team = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight text-white"
+                        className="text-3xl md:text-4xl font-extrabold mb-6 tracking-tight text-white"
                     >
                         Our Team
                     </motion.h2>

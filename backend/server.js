@@ -23,7 +23,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); // Ye line routes se upar honi chahiye
-app.use("/uploads", express.static("uploads"));
+// Middleware for static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ✅ Routes import
 const authRoutes = require("./routes/authRoutes.js");
