@@ -18,7 +18,7 @@ async function fixDb() {
 
   const replaceUrl = (str) => {
     if (typeof str === 'string' && str.includes('http://localhost:5000')) {
-      return str.replace(/http:\/\/localhost:5000/g, 'https://my-life-website.onrender.com');
+      return str.replace(/http:\/\/localhost:5000/g, 'https://devisions.onrender.com');
     }
     return str;
   };
