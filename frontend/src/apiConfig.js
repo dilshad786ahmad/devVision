@@ -4,7 +4,7 @@
 //  cherck
 // asdasdasd
 // Force redeploy with new backend URL: https://website-me.onrender.com
-export const API_BASE_URL = "http://localhost:5000";
+export const API_BASE_URL = "https://devvision-3.onrender.com";
 
 // Helper to resolve image URLs (handles both local uploads and cloud storage)
 export const resolveUrl = (url) => {
