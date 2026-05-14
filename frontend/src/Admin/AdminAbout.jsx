@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { API_BASE_URL } from "../apiConfig";
+import { API_BASE_URL, resolveUrl } from "../apiConfig";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Edit, Save, Plus, Trash2, Layout, Image as ImageIcon, BarChart3, ChevronRight, X, Download } from "lucide-react";
 import { SkeletonBase, AdminFormSkeleton } from "../components/Skeleton";
@@ -338,7 +338,7 @@ const AdminAbout = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {images.map((img, i) => (
                 <div key={i} className="group relative aspect-video rounded-[2rem] overflow-hidden border border-white/10">
-                  <img src={img} loading="lazy" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700" alt="Gallery" />
+                  <img src={resolveUrl(img)} loading="lazy" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700" alt="Gallery" />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center gap-4">
                      <button onClick={() => handleDeleteImage(i)} className="p-4 bg-red-600 rounded-full shadow-xl shadow-red-600/20 hover:scale-110 transition-transform"><Trash2 size={20}/></button>
                   </div>
@@ -402,7 +402,7 @@ const AdminAbout = () => {
                         <input type="file" onChange={handleImageFileUpload} className="hidden" id="gallery-upload" accept="image/*" />
                         <label htmlFor="gallery-upload" className="flex flex-col items-center justify-center gap-4 w-full h-40 bg-white/5 border-2 border-dashed border-white/10 rounded-3xl cursor-pointer hover:bg-white/10 hover:border-orange-500/50 transition-all overflow-hidden">
                           {imageModal.url ? (
-                            <img src={imageModal.url} className="w-full h-full object-cover" alt="Preview" />
+                            <img src={resolveUrl(imageModal.url)} className="w-full h-full object-cover" alt="Preview" />
                           ) : (
                             <>
                               <ImageIcon className="w-8 h-8 text-gray-600 group-hover:text-orange-500 transition-colors" />

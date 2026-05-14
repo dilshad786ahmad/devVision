@@ -7,7 +7,7 @@ import {
   Briefcase, Shield, Zap, Target, Rocket, Cpu, Code2, Globe, Heart, Smartphone 
 } from "lucide-react";
 import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
-import { API_BASE_URL } from "../apiConfig";
+import { API_BASE_URL, resolveUrl } from "../apiConfig";
 
 const IconMap = { 
   Cloud, Lock, BarChart3, Box, Layout, 
@@ -219,7 +219,7 @@ const AdminHome = () => {
                           <div className="grid grid-cols-3 gap-2">
                              {heroForm.images.map((img, i) => (
                                <div key={i} className="relative aspect-video rounded-lg overflow-hidden border border-white/10 group">
-                                  <img src={img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all" />
+                                  <img src={resolveUrl(img)} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all" />
                                   <button type="button" onClick={() => removeCarouselImage(i)} className="absolute top-1 right-1 p-1 bg-red-600 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={12}/></button>
                                </div>
                              ))}
@@ -234,7 +234,7 @@ const AdminHome = () => {
                           <div className="grid grid-cols-2 gap-4">
                              {heroForm.cardImages?.map((img, i) => (
                                 <div key={i} className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 group">
-                                   <img src={img} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all" />
+                                   <img src={resolveUrl(img)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all" />
                                    <button type="button" onClick={() => removeCardImage(i)} className="absolute top-2 right-2 p-2 bg-red-600 rounded-xl opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
                                    <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/60 rounded-md text-[8px] font-bold uppercase tracking-tighter text-white">Position {i+1}</div>
                                 </div>

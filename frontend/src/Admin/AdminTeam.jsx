@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, Edit2, Save, X, Image, Mail, Phone, MapPin, User, Briefcase, PlusCircle, MinusCircle } from 'lucide-react';
 import { Twitter, Linkedin, Instagram } from '../components/BrandIcons';
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from '../apiConfig';
+import { API_BASE_URL, resolveUrl } from '../apiConfig';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -468,7 +468,7 @@ const AdminTeam = () => {
                                                         {project.file ? (
                                                             <span className="text-[8px] text-blue-400">New Image</span>
                                                         ) : (
-                                                            <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                                                            <img src={resolveUrl(project.image)} alt={project.title} className="w-full h-full object-cover" />
                                                         )}
                                                     </div>
                                                     <div className="flex-1">
@@ -513,7 +513,7 @@ const AdminTeam = () => {
                             className="p-4 rounded-3xl transition-all bg-[#0a0a0a]"
                         >
                             <div className="flex items-center space-x-4 mb-4">
-                                <img src={member.image} alt={member.name} className="w-16 h-16 rounded-2xl object-cover border-2 border-blue-500/30" />
+                                <img src={resolveUrl(member.image)} alt={member.name} className="w-16 h-16 rounded-2xl object-cover border-2 border-blue-500/30" />
                                 <div>
                                     <h3 className="font-bold">{member.name}</h3>
                                     <p className="text-xs text-blue-500 font-bold">{member.role}</p>

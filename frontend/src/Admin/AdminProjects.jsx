@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { FolderGit2, Edit, Save, Plus, Trash2, X, Layout, Sparkles, Image as ImageIcon, ExternalLink, Box } from "lucide-react";
 import { SkeletonBase, AdminFormSkeleton, AdminGridSkeleton } from "../components/Skeleton";
-import { API_BASE_URL } from "../apiConfig";
+import { API_BASE_URL, resolveUrl } from "../apiConfig";
 
 const AdminProjects = () => {
   const navigate = useNavigate();
@@ -187,7 +187,7 @@ const AdminProjects = () => {
                  {projects.map((project, i) => (
                     <div key={i} className="group bg-white/[0.02] border border-white/10 rounded-[2.5rem] overflow-hidden backdrop-blur-xl hover:bg-white/[0.04] transition-all flex flex-col">
                        <div className="relative aspect-video overflow-hidden">
-                          <img src={project.image} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700" alt={project.title} />
+                          <img src={resolveUrl(project.image)} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700" alt={project.title} />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                              <button onClick={() => setProjectModal({ isOpen: true, isEdit: true, data: project, index: i })} className="p-4 bg-blue-600 rounded-2xl shadow-xl shadow-blue-600/20 hover:scale-110 transition-transform"><Edit size={20}/></button>
                              <button onClick={() => navigate(`/admin/project-details/${project._id}`)} className="p-4 bg-orange-600 rounded-2xl shadow-xl shadow-orange-600/20 hover:scale-110 transition-transform"><ExternalLink size={20}/></button>
@@ -243,7 +243,7 @@ const AdminProjects = () => {
                         <label className="text-[10px] font-bold text-gray-500 uppercase px-1">Thumbnail Image</label>
                         <div className="flex gap-4 items-center">
                             <div className="w-20 h-20 rounded-xl overflow-hidden border border-white/10 bg-white/5 shrink-0">
-                                {projectModal.data.image ? <img src={projectModal.data.image} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><ImageIcon size={16} className="text-gray-700" /></div>}
+                                {projectModal.data.image ? <img src={resolveUrl(projectModal.data.image)} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><ImageIcon size={16} className="text-gray-700" /></div>}
                             </div>
                             <label className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none cursor-pointer hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-xs font-bold">
                                 <input type="file" className="hidden" onChange={async (e) => {

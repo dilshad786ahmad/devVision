@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { API_BASE_URL } from "../apiConfig";
+import { API_BASE_URL, resolveUrl } from "../apiConfig";
 import { 
   Edit, Plus, Trash2, Save, X, Layout, Image as ImageIcon, 
   Briefcase, ChevronRight, Check, Sparkles, Asterisk, Layers, 
@@ -248,7 +248,7 @@ const AdminPrices = () => {
                    {pageContent?.standardSolutions?.map(sol => (
                      <div key={sol._id} className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] overflow-hidden backdrop-blur-xl group hover:bg-white/[0.04] transition-all">
                         <div className="h-40 relative">
-                           <img src={sol.img} className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all" alt={sol.title} />
+                           <img src={resolveUrl(sol.img)} className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all" alt={sol.title} />
                         </div>
                         <div className="p-8">
                            <h3 className="font-bold mb-2">{sol.title}</h3>

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { Save, ArrowLeft, Image as ImageIcon, Plus, Trash2, Star, Sparkles, Layout, Box } from "lucide-react";
 import { SkeletonBase, AdminFormSkeleton } from "../components/Skeleton";
-import { API_BASE_URL } from "../apiConfig";
+import { API_BASE_URL, resolveUrl } from "../apiConfig";
 
 export default function AdminProjectDetails() {
   const { projectId } = useParams();
@@ -163,7 +163,7 @@ export default function AdminProjectDetails() {
                     <div className="md:col-span-2 space-y-4">
                         <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest px-1">Hero Image</label>
                         <div className="relative group aspect-video rounded-3xl overflow-hidden border border-white/10 bg-white/5">
-                            {formData.mainImage ? <img src={formData.mainImage} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-700 font-black">NO IMAGE UPLOADED</div>}
+                            {formData.mainImage ? <img src={resolveUrl(formData.mainImage)} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-700 font-black">NO IMAGE UPLOADED</div>}
                             <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
                                 <input type="file" className="hidden" onChange={e => handleImageUpload(e, "mainImage")} />
                                 <div className="bg-orange-500 px-6 py-3 rounded-xl font-bold flex items-center gap-2"><ImageIcon size={18} /> Upload New Hero</div>
@@ -180,7 +180,7 @@ export default function AdminProjectDetails() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {formData.thumbnails.map((img, i) => (
                         <div key={i} className="relative group aspect-square rounded-2xl overflow-hidden border border-white/10">
-                            <img src={img} className="w-full h-full object-cover" />
+                            <img src={resolveUrl(img)} className="w-full h-full object-cover" />
                             <button type="button" onClick={() => setFormData({...formData, thumbnails: formData.thumbnails.filter((_, idx) => idx !== i)})} className="absolute top-2 right-2 p-2 bg-red-600 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={12}/></button>
                         </div>
                     ))}
